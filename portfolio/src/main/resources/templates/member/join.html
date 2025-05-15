@@ -101,71 +101,96 @@
 <!-- 푸터 -->
 <th:block th:replace="layout/footer :: footer"></th:block>
 <script>
-  let isIdChecked = false;
-  let isEmailChecked = false;
+	let isIdChecked = false;
+	let isEmailChecked = false;
 
-  function checkId() {
+	function checkId() {
+		
     const id = document.getElementById("mbId").value;
     const msg = document.getElementById("idCheckMsg");
+    
     isIdChecked = false;
 
-    if (!id) {
-      msg.innerText = "아이디를 입력해주세요.";
-      msg.style.color = "red";
-      return;
-    }
+    	if (!id) {
+    		
+      		msg.innerText = "아이디를 입력해주세요.";
+      		msg.style.color = "red";
+      		
+      		return;
+      	
+    	}
 
-    fetch(`/member/check-id?id=${encodeURIComponent(id)}`)
-      .then(response => response.text())
-      .then(result => {
-        if (result === "duplicate") {
-          msg.innerText = "이미 사용 중인 아이디입니다.";
-          msg.style.color = "red";
-        } else {
-          msg.innerText = "사용 가능한 아이디입니다.";
-          msg.style.color = "green";
-          isIdChecked = true;
-        }
-      });
-  }
+    	fetch(`/member/check-id?id=${encodeURIComponent(id)}`)
+      	.then(response => response.text())
+      	.then(result => {
+      		
+	        if (result === "duplicate") {
+	        	
+	        	msg.innerText = "이미 사용 중인 아이디입니다.";
+	          	msg.style.color = "red";
+	          	
+	        } else {
+	        	
+	          msg.innerText = "사용 가능한 아이디입니다.";
+	          msg.style.color = "green";
+	          isIdChecked = true;
+	          
+	        }
+      	});
+	}
 
-  function checkEmail() {
+	function checkEmail() {
+	  
     const email = document.getElementById("mbEmail").value;
     const msg = document.getElementById("emailCheckMsg");
+    
     isEmailChecked = false;
 
-    if (!email) {
-      msg.innerText = "이메일을 입력해주세요.";
-      msg.style.color = "red";
-      return;
-    }
+		if (!email) {
+    	
+			msg.innerText = "이메일을 입력해주세요.";
+			msg.style.color = "red";
+			
+			return;
+		}
 
-    fetch(`/member/check-email?email=${encodeURIComponent(email)}`)
-      .then(response => response.text())
-      .then(result => {
-        if (result === "duplicate") {
-          msg.innerText = "이미 사용 중인 이메일입니다.";
-          msg.style.color = "red";
-        } else {
-          msg.innerText = "사용 가능한 이메일입니다.";
-          msg.style.color = "green";
-          isEmailChecked = true;
-        }
-      });
-  }
+		fetch(`/member/check-email?email=${encodeURIComponent(email)}`)
+      	.then(response => response.text())
+      	.then(result => {
+      		
+	        if (result === "duplicate") {
+	        	
+	          msg.innerText = "이미 사용 중인 이메일입니다.";
+	          msg.style.color = "red";
+	          
+	        } else {
+	        	
+	          msg.innerText = "사용 가능한 이메일입니다.";
+	          msg.style.color = "green";
+	          isEmailChecked = true;
+	        }
+        
+		});
+	}
 
-  document.getElementById("registerForm").addEventListener("submit", function (event) {
-    if (!isIdChecked) {
-      alert("아이디 중복 확인을 해주세요.");
-      event.preventDefault();
-      return;
-    }
+	document.getElementById("registerForm").addEventListener("submit", function (event) {
+		
+		if (!isIdChecked) {
+			
+			alert("아이디 중복 확인을 해주세요.");
+      		event.preventDefault();
+      		
+      		return;
+      	
+    	}
 
-    if (!isEmailChecked) {
-      alert("이메일 중복 확인을 해주세요.");
-      event.preventDefault();
-    }
-  });
+		if (!isEmailChecked) {
+			
+		alert("이메일 중복 확인을 해주세요.");
+		event.preventDefault();
+		
+		}
+	});
 </script>
 </body>
 </html>

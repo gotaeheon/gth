@@ -14,25 +14,25 @@
 	<main>
 		<div class="container mt-5">
 			<h2 class="mb-4">게시물 작성</h2>
-		    <form action="/board/register" method="post" enctype="multipart/form-data">
-	    <div class="mb-3">
-	        <label for="title" class="form-label">제목</label>
-	        <input type="text" id="title" name="title" class="form-control" required>
-	    </div>    
-	    <div class="mb-3">
-	        <label for="content" class="form-label">내용</label>
-	        <textarea id="content" name="content" class="form-control" rows="10" required></textarea>
-	    </div>    
-	    <!-- 이미지 첨부 -->
-	    <div class="mb-3">
-	    	<label for="image" class="form-label">이미지 첨부</label>
-	    	<input type="file" id="image" name="imageFiles" class="form-control" multiple>
-		</div>
-		<div class="mb-4">
-	    <button type="submit" class="btn btn-primary">작성 완료</button>
-	    <a href="/board/list" class="btn btn-secondary">목록으로</a>
-	    </div>
-	</form>
+		    	<form action="/board/register" method="post" enctype="multipart/form-data">
+				    <div class="mb-3">
+				        <label for="title" class="form-label">제목</label>
+				        <input type="text" id="title" name="title" class="form-control" required>
+				    </div>    
+				    <div class="mb-3">
+				        <label for="content" class="form-label">내용</label>
+				        <textarea id="content" name="content" class="form-control" rows="10" required></textarea>
+				    </div>    
+				    <!-- 이미지 첨부 -->
+				    <div class="mb-3">
+				    	<label for="image" class="form-label">이미지 첨부</label>
+				    	<input type="file" id="image" name="imageFiles" class="form-control" multiple>
+					</div>
+					<div class="mb-4">
+				    <button type="submit" class="btn btn-primary">작성 완료</button>
+				    <a href="/board/list" class="btn btn-secondary">목록으로</a>
+				    </div>
+				</form>
 		</div>
 	</main>
 <!-- 푸터 -->

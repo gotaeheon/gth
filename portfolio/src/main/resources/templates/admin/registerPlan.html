@@ -7,220 +7,161 @@
 <title>추천 일정 등록</title>
 <meta name="description" content="">
 <meta name="keywords" content="">
-
-
-    <!-- 공통 CSS -->
-    <th:block th:replace="layout/head-css :: commonCss"></th:block>
+<!-- 공통 CSS -->
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
 </head>
 <body>
 <!-- 헤더 -->
 <th:block th:replace="layout/header :: header"></th:block>
-<main class="container mt-4">
-    <h1 class="mb-4">추천 일정 등록</h1>
-    <form id="planForm" action="/admin/registerPlan" method="POST" onsubmit="return validateForm()">
-        
-        <!-- 출발, 숙소, 도착 정보 카드 -->
-        <div class="row mb-3">
-            <!-- 출발 정보 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>출발 정보</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="departureRegionName">출발 지역:</label>
-                            <select class="form-control" id="departureRegionName" name="departureRegionName" required>
-                                <option value="">출발지 선택</option>
-                                <option value="서울">서울</option>
-                                <option value="부산">부산</option>
-                                <option value="대구">대구</option>
-                                <option value="인천">인천</option>
-                                <option value="광주">광주</option>
-                                <option value="대전">대전</option>
-                                <option value="울산">울산</option>
-                                <option value="세종">세종</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="departureTransportType">출발 교통수단 종류:</label>
-                            <select class="form-control" id="departureTransportType" name="departureTransportType" required>
-                                <option value="">교통수단 선택</option>
-                                <option value="무궁화">무궁화</option>
-                                <option value="버스">버스</option>
-                                <option value="고속버스">고속버스</option>
-                                <option value="KTX">KTX</option>
-                                <option value="SRT">SRT</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="departureCompany">출발 교통수단 회사:</label>
-                            <input type="text" class="form-control" id="departureCompany" name="departureCompany" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="departureTime">출발 시간:</label>
-                            <input type="time" class="form-control" id="departureTime" name="departureTime" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="departureArrivalTime">도착 시간:</label>
-                            <input type="time" class="form-control" id="departureArrivalTime" name="departureArrivalTime" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="departurePrice">출발 교통수단 가격:</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="departurePrice" name="departurePrice" required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">원</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 숙소 정보 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>숙소 정보</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="hotelName">숙소 이름:</label>
-                            <input type="text" class="form-control" id="hotelName" name="hotelName" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="hotelAddress">숙소 주소:</label>
-                            <input type="text" class="form-control" id="hotelAddress" name="hotelAddress" required>
-                        </div>
-						
-						<div class="form-group">
-						    <label for="detailUrl">홈페이지 주소:</label>
-						    <input type="text" class="form-control" id="detailUrl" name="detailUrl" required>
+	<main class="container mt-5">
+		<h1 class="mb-4 text-center">추천 일정 등록</h1>
+			<form id="planForm" action="/admin/registerPlan" method="POST" onsubmit="return validateForm()">
+				<div class="row g-4">
+	      			<!-- 출발 정보 -->
+					<div class="col-md-4">
+	        			<div class="card h-100">
+	          				<div class="card-header bg-primary text-white">
+	            				출발 정보
+	          				</div>
+			         	 	<div class="card-body">
+			            		<div class="mb-3">
+			              			<label for="departureRegionName" class="form-label">출발 지역</label>
+			              				<select class="form-select" id="departureRegionName" name="departureRegionName" required>
+			                				<option value="">출발지 선택</option>
+			                				<option>서울</option><option>부산</option><option>대구</option><option>인천</option>
+			                				<option>광주</option><option>대전</option><option>울산</option><option>세종</option>
+			              				</select>
+			            		</div>
+				            	<div class="mb-3">
+				              		<label for="departureTransportType" class="form-label">출발 교통수단 종류</label>
+				              			<select class="form-select" id="departureTransportType" name="departureTransportType" required>
+				                			<option value="">교통수단 선택</option>
+				                			<option>무궁화</option><option>버스</option><option>고속버스</option><option>KTX</option><option>SRT</option>
+				              			</select>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="departureCompany" class="form-label">교통수단 회사</label>
+				              		<input type="text" class="form-control" id="departureCompany" name="departureCompany" required>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="departureTime" class="form-label">출발 시간</label>
+				              		<input type="time" class="form-control" id="departureTime" name="departureTime" required>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="departureArrivalTime" class="form-label">도착 시간</label>
+				              		<input type="time" class="form-control" id="departureArrivalTime" name="departureArrivalTime" required>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="departurePrice" class="form-label">교통 가격</label>
+				              		<div class="input-group">
+				                		<input type="number" class="form-control" id="departurePrice" name="departurePrice" required>
+				                		<span class="input-group-text">원</span>
+				              		</div>
+				            	</div>
+							</div>
+	        			</div>
+					</div>	
+					<!-- 숙소 정보 -->
+	      			<div class="col-md-4">
+				        <div class="card h-100">
+				        	<div class="card-header bg-success text-white">숙소 정보</div>
+				          		<div class="card-body">
+				            		<div class="mb-3">
+				              			<label for="hotelName" class="form-label">숙소 이름</label>
+				              			<input type="text" class="form-control" id="hotelName" name="hotelName" required>
+				            		</div>
+				            		<div class="mb-3">
+				              			<label for="hotelAddress" class="form-label">숙소 주소</label>
+				              			<input type="text" class="form-control" id="hotelAddress" name="hotelAddress" required>
+				            		</div>
+				            		<div class="mb-3">
+				              			<label for="detailUrl" class="form-label">홈페이지 주소</label>
+				              			<input type="url" class="form-control" id="detailUrl" name="detailUrl" required>
+				            		</div>
+				            		<div class="mb-3">
+				              			<label for="hotelRating" class="form-label">숙소 평점</label>
+				              			<input type="number" step="0.5" class="form-control" id="hotelRating" name="hotelRating" required>
+				            		</div>
+				            		<div class="mb-3">
+				              			<label for="hotelPrice" class="form-label">숙소 가격</label>
+				              			<div class="input-group">
+				                			<input type="number" class="form-control" id="hotelPrice" name="hotelPrice" required>
+				                			<span class="input-group-text">원</span>
+				              			</div>
+				            		</div>
+				          		</div>
+				    	</div>
+	      			</div>
+	
+					<!-- 도착 정보 -->
+					<div class="col-md-4">
+				    	<div class="card h-100">
+				        	<div class="card-header bg-warning text-dark">도착 정보</div>
+				          	<div class="card-body">
+				            	<div class="mb-3">
+				              		<label for="arrivalRegionName" class="form-label">도착 지역</label>
+				              		<select class="form-select" id="arrivalRegionName" name="arrivalRegionName" required>
+				                		<option value="">도착지 선택</option>
+				                		<option>서울</option><option>부산</option><option>대구</option><option>인천</option>
+				                		<option>광주</option><option>대전</option><option>울산</option><option>세종</option>
+				              		</select>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="returnTransportType" class="form-label">복귀 교통수단 종류</label>
+				              		<select class="form-select" id="returnTransportType" name="returnTransportType" required>
+				                		<option value="">교통수단 선택</option>
+				                		<option>무궁화</option><option>버스</option><option>고속버스</option><option>KTX</option><option>SRT</option>
+				              		</select>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="returnCompany" class="form-label">복귀 회사</label>
+				              		<input type="text" class="form-control" id="returnCompany" name="returnCompany" required>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="returnTime" class="form-label">복귀 시간</label>
+				              		<input type="time" class="form-control" id="returnTime" name="returnTime" required>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="returnArrivalTime" class="form-label">복귀 도착 시간</label>
+				              		<input type="time" class="form-control" id="returnArrivalTime" name="returnArrivalTime" required>
+				            	</div>
+				            	<div class="mb-3">
+				              		<label for="returnPrice" class="form-label">복귀 가격</label>
+					              	<div class="input-group">
+					                	<input type="number" class="form-control" id="returnPrice" name="returnPrice" required>
+					                	<span class="input-group-text">원</span>
+					              	</div>
+				            	</div>
+							</div>
 						</div>
-						
-                        <div class="form-group">
-                            <label for="hotelRating">숙소 평점:</label>
-                            <input type="number" step="0.5" class="form-control" id="hotelRating" name="hotelRating" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="hotelPrice">숙소 가격:</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="hotelPrice" name="hotelPrice" required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">원</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 도착 정보 -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>도착 정보</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="arrivalRegionName">도착 지역:</label>
-                            <select class="form-control" id="arrivalRegionName" name="arrivalRegionName" required>
-                                <option value="">출발지 선택</option>
-                                <option value="서울">서울</option>
-                                <option value="부산">부산</option>
-                                <option value="대구">대구</option>
-                                <option value="인천">인천</option>
-                                <option value="광주">광주</option>
-                                <option value="대전">대전</option>
-                                <option value="울산">울산</option>
-                                <option value="세종">세종</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="returnTransportType">복귀 교통수단 종류:</label>
-                            <select class="form-control" id="returnTransportType" name="returnTransportType" required>
-                                <option value="">교통수단 선택</option>
-                                <option value="무궁화">무궁화</option>
-                                <option value="버스">버스</option>
-                                <option value="고속버스">고속버스</option>
-                                <option value="KTX">KTX</option>
-                                <option value="SRT">SRT</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="returnCompany">복귀 교통수단 회사:</label>
-                            <input type="text" class="form-control" id="returnCompany" name="returnCompany" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="returnTime">복귀 시간:</label>
-                            <input type="time" class="form-control" id="returnTime" name="returnTime" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="returnArrivalTime">복귀 도착 시간:</label>
-                            <input type="time" class="form-control" id="returnArrivalTime" name="returnArrivalTime" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="returnPrice">복귀 교통수단 가격:</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="returnPrice" name="returnPrice" required>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">원</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 전체 가격과 일정 등록 -->
-        <div class="row mb-3 justify-content-center">
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="totalPrice">일정 총 가격:</label>
-                    <div class="input-group">
-                        <input type="number" class="form-control" id="totalPrice" name="totalPrice" readonly required>
-                        <div class="input-group-append">
-                            <span class="input-group-text">원</span>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">일정 등록</button>
-                <a th:href="@{/home}" class="btn btn-secondary  btn-block">홈으로</a>
-            </div>            
-        </div>
-    </form>
-</main>
-
-<!-- Footer -->
+					</div>
+				</div>
+	
+	    		<!-- 총 가격과 버튼 -->
+	    		<div class="row mt-5 mb-4 justify-content-center">
+	      			<div class="col-md-6">
+	        			<div class="mb-3">
+	          				<label for="totalPrice" class="form-label">총 가격</label>
+		          			<div class="input-group">
+		            			<input type="number" class="form-control" id="totalPrice" name="totalPrice" readonly required>
+		            			<span class="input-group-text">원</span>
+		          			</div>
+	        			</div>
+		        		<button type="submit" class="btn btn-primary w-100 mb-2">일정 등록</button>
+		        		<a th:href="@{/home}" class="btn btn-secondary w-100">홈으로</a>
+	      			</div>
+				</div>
+			</form>
+	</main>
 <th:block th:replace="layout/footer :: footer"></th:block>
-
-<!-- JS Scripts -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Validation Script -->
 <script>
     function validateForm() {
-        // Get all form elements
+
         var form = document.getElementById('planForm');
         var inputs = form.getElementsByTagName('input');
         var selects = form.getElementsByTagName('select');
         
-        // Check if any required field is empty
+
         for (var i = 0; i < inputs.length; i++) {
             if (inputs[i].hasAttribute('required') && (inputs[i].value === '' || inputs[i].value === null)) {
                 alert('모든 필드를 채워주세요.');
