@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>전체 리뷰 목록</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 공통 CSS -->
+    <th:block th:replace="layout/head-css :: commonCss"></th:block>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px;
+        }
+        th {
+            font-weight: bold;
+            border-top: 2px solid #ddd; /* 제목과 작성자 위에 선 추가 */
+        }
+        td {
+            border-top: 1px solid #ddd;
+        }
+        .title {
+            font-weight: bold;
+        }
+        .writer, .reg-date {
+            font-weight: normal;
+            color: #6c757d;
+        }
+        .view-count, .like-count {
+            font-weight: lighter;
+            color: #6c757d;
+        }
+        .table td, .table th {
+            border-left: none;
+            border-right: none;
+        }
+        .table th:first-child, .table td:first-child {
+            padding-left: 20px;
+        }
+        .table th:last-child, .table td:last-child {
+            padding-right: 20px;
+        }
+        .create-btn {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* 마우스 오버 효과 */
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+    .star {
+        color: gold; 
+    }
+    .text-muted {
+        color: #6c757d;
+    }
+</style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <th:block th:replace="layout/header :: header"></th:block>
+
+    <main>
+        <div class="container mt-5">
+            <h2 class="mb-4 fw-bold text-center">리뷰게시판</h2>
+
+            <!-- 검색 폼 -->
+            <form th:action="@{/plans/reviews}" method="get" class="row g-2 justify-content-center mb-4">
+                <div class="col-auto">
+                    <select name="searchType" class="form-select">
+                        <option th:value="reTitle" th:selected="${searchType == 'reTitle'}">제목</option>
+                        <option th:value="reComment" th:selected="${searchType == 'reComment'}">내용</option>
+                        <option th:value="mbId" th:selected="${searchType == 'mbId'}">작성자</option>
+                        <option th:value="reTitle_reComment" th:selected="${searchType == 'reTitle_reComment'}">제목+내용</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <input type="text" name="keyword" class="form-control me-2" th:value="${keyword}" placeholder="검색어" style="width: 200px;">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary me-1">검색</button>
+                </div>
+                <div class="col-auto">
+                    <a th:href="@{/plans/reviews}" class="btn btn-outline-secondary">초기화</a>
+                </div>
+            </form>
+
+            <!-- 정렬 폼 -->
+            <form th:action="@{/plans/reviews}" method="get" class="d-flex mb-4">
+                <select name="sort" class="form-select me-2" style="width: 150px;">
+                    <option th:value="reScore" th:selected="${sort == 'reScore'}">평점순</option>
+                    <option th:value="reLike" th:selected="${sort == 'reLike'}">좋아요순</option>
+                    <option th:value="reRegdate" th:selected="${sort == 'reRegdate'}">작성일순</option>
+                </select>
+                <button type="submit" class="btn btn-secondary">정렬</button>
+            </form>
+
+            <!-- 리뷰 목록 -->
+            <div th:if="${#lists.isEmpty(reviews)}">
+                <p class="text-center text-muted">아직 등록된 후기가 없습니다.</p>
+            </div>
+
+            <div th:unless="${#lists.isEmpty(reviews)}">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>제목</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
+                            <th>조회수</th>
+                            <th>좋아요</th>
+                            <th>평점</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="review : ${reviews}">
+                            <td class="title">
+                                <a th:href="@{/plans/reviews/{id}(id=${review.reNo}, page=${currentPage})}"
+                                   th:text="${review.reTitle}" class="text-decoration-none text-dark"></a>
+                            </td>
+                            <td class="text-muted" th:text="${review.mbId}"></td>
+                            <td class="text-muted" th:text="${#temporals.format(review.reRegdate, 'yyyy-MM-dd')}"></td>
+                            <td class="text-muted" th:text="${review.reHit}"></td>
+                            <td class="text-muted" th:text="${review.reLike}"></td>
+                            <td>
+                                <span th:each="i : ${#numbers.sequence(1, 5)}">
+                                    <i th:classappend="${i <= review.reScore} ? 'fas fa-star star' : 'far fa-star text-muted'"></i>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 페이지네이션 -->
+            <nav class="mt-4" aria-label="Page navigation" th:if="${not #lists.isEmpty(reviews)}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:class="${currentPage == 1 ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/plans/reviews(page=${currentPage - 1}, searchType=${searchType}, keyword=${keyword}, sortType=${sortType})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:class="${i + 1 == currentPage ? 'page-item active' : 'page-item'}">
+                        <a class="page-link"
+                           th:href="@{/plans/reviews(page=${i + 1}, searchType=${searchType}, keyword=${keyword}, sortType=${sortType})}"
+                           th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:class="${currentPage == totalPages ? 'disabled' : ''}">
+                        <a class="page-link" th:href="@{/plans/reviews(page=${currentPage + 1}, searchType=${searchType}, keyword=${keyword}, sortType=${sortType})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <th:block th:replace="layout/footer :: footer"></th:block>
+
+    <!-- FontAwesome 스크립트 -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>마이페이지</title>
+    <meta charset="UTF-8">
+    <th:block th:replace="layout/head-css :: commonCss"></th:block>
+</head>
+<body>
+
+<th:block th:replace="layout/header :: header"></th:block>
+<main>
+	<div class="container mt-5">
+	    <h2 class="mb-4 text-center">내가 저장한 여행 일정</h2>
+		<!--성공/실패 메시지 출력 -->
+		<div th:if="${success}" class="alert alert-success text-center" th:text="${success}"></div>
+		<div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"></div>
+	    
+	    <!-- 저장된 일정이 없을 경우 안내 메시지 -->
+	    <div th:if="${savedPlans.isEmpty()}" class="alert alert-info text-center">
+	        <p>저장한 일정이 없습니다.</p>
+	    </div>
+	
+	    <!-- 저장된 일정이 있을 경우 -->
+	    <ul class="list-group">
+	        <li class="list-group-item d-flex justify-content-between align-items-center"
+	            th:each="saved : ${savedPlans}">
+	
+	            <div>
+	                <!-- 일정 상세보기 링크 -->
+	                <a th:href="@{/plans/detail/{id}(id=${saved.planId})}" class="text-decoration-none fw-bold">
+	                    <span th:text="${saved.departureRegionName}"></span> → <span th:text="${saved.arrivalRegionName}"></span>
+	                </a>
+	                <!-- 저장 시간 표시 -->
+	                <p class="text-muted" th:text="'저장한 날짜: ' + ${#temporals.format(saved.savedAt, 'yyyy-MM-dd HH:mm')}"></p>
+	            </div>
+	
+	            <div class="d-flex gap-2">
+	                <!-- 리뷰 작성 버튼 -->
+	                <a th:href="@{/plans/write/{planId}(planId=${saved.planId})}" class="btn btn-primary btn-sm">
+	                    리뷰 작성
+	                </a>
+	
+	                <!-- 삭제 버튼 -->
+	                <form th:action="@{/plans/delete/{id}(id=${saved.saveId})}" method="post"
+	                      onsubmit="return confirm('정말 삭제하시겠습니까?');">
+	                    <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+	                </form>
+	            </div>
+	        </li>
+	    </ul>
+	
+	    <div class="mt-4 text-center">
+	        <!-- 홈으로 돌아가는 버튼 -->
+	        <a href="/home" class="btn btn-secondary btn-lg mb-4">홈으로</a>
+	    </div>
+	</div>
+</main>
+<th:block th:replace="layout/footer :: footer"></th:block>
+
+</body>
+</html>

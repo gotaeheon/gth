@@ -1,0 +1,190 @@
+/* Bootstrap 기반 정리 및 개선 ------------------------ */
+
+/* 변수 선언 */
+:root {
+    --accent-color: #1a9f90;
+    --heading-color: #212529;
+    --nav-color: #6c757d;
+    --nav-hover-color: #0d6efd;
+}
+
+/* 폰트 및 전체 구조 개선 */
+html, body {
+    height: 100%; /* 전체 페이지가 100% 높이를 가지도록 설정 */
+    font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    background-color: #ffffff;
+    color: #212529;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 배치 */
+}
+
+main {
+    flex: 1; /* main 영역이 나머지 공간을 차지하도록 설정 */
+}
+
+/* 헤더 고정 */
+.header {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1050; /* 헤더의 z-index를 높여서 다른 콘텐츠보다 위에 위치하도록 */
+    height: 80px; /* 헤더 높이 설정 */
+    padding: 1rem; /* 여백 추가 */
+    display: flex;
+    align-items: center;
+}
+
+/* 로고와 네비게이션 메뉴 양쪽 끝으로 배치 */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* 네비게이션 메뉴 오른쪽으로 고정 */
+.navbar-collapse {
+    display: flex;
+    justify-content: flex-end; /* 메뉴를 오른쪽으로 배치 */
+}
+
+/* 네비게이션 링크 호버 효과 */
+.navmenu a:hover,
+.navmenu a.active {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+/* 헤더가 고정되었을 때 메인 영역이 겹치지 않도록 상단 여백 추가 */
+main {
+    padding-top: 100px; /* 헤더 높이 + 여유공간 */
+}
+
+/* 네비게이션 링크 스타일 */
+.navmenu a {
+    font-weight: 500;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    transition: 0.3s;
+}
+
+.navmenu a:hover,
+.navmenu a.active {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+/* Hero 개선 */
+.hero {
+    background: linear-gradient(135deg, #1a9f90, #24b7a4);
+    padding: 6rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 1rem auto 2rem;
+}
+
+/* 버튼 재설정 */
+.btn-accent {
+    background-color: var(--accent-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-accent:hover {
+    background-color: #16887a;
+}
+
+/* 검색 바 개선 */
+.hero-newsletter .search-bar {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Footer 스타일 (항상 페이지의 하단에 위치하도록) */
+.footer {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-size: 0.875rem;
+    padding: 2rem 0;
+    border-top: 1px solid #dee2e6;
+    text-align: center;
+    /* 푸터가 페이지 하단에 고정되도록 */
+    margin-top: auto; /* 푸터가 페이지의 아래쪽으로 밀려나게 */
+}
+
+/* 푸터 내 텍스트 가운데 정렬 */
+.footer .copyright p {
+    margin: 0;
+    text-align: center;
+}
+
+/* 카드 레이아웃 추천 스타일 (예: 여행지 카드 등) */
+.card-custom {
+    border: none;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    transition: transform 0.3s ease;
+}
+
+.card-custom:hover {
+    transform: translateY(-5px);
+}
+
+/* 출발지 검색, 예산 입력, 검색 버튼 가로 배치 */
+.search-container {
+    display: flex;
+    gap: 1rem;  /* 항목 간 간격 조정 */
+    justify-content: space-between;  /* 아이템 간의 간격을 자동으로 균등하게 배치 */
+}
+
+/* 각 항목에 대한 flex 비율 설정 */
+.search-container select {
+    flex: 2;  /* 출발지 선택은 3 비율 */
+}
+
+.search-container input {
+    flex: 6;  /* 예산 입력은 5 비율 */
+}
+
+.search-container button {
+    flex: 2;  /* 검색 버튼은 2 비율 */
+}
+
+/* 작은 화면에서 항목이 세로로 배치되도록 변경 */
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;  /* 세로로 배치 */
+        gap: 0.5rem;  /* 세로 배치 시 간격 조정 */
+    }
+
+    .search-container select,
+    .search-container input,
+    .search-container button {
+        flex: unset;  /* 세로 배치에서 flex 비율을 초기화 */
+    }
+
+    .hero h2 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+}

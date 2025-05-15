@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!-- layout 사용한다는 선언 -->
+<html 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<h3>Sample Layout Header</h3>
+	</div>
+	
+	<!-- 여기에 layout을 선언하고 다른 thymeleaf 페이지에서
+	지정한 내용이 이부분에 출력 -->
+	<div layout:fragment="content">
+		<p>Page Content goes here</p>
+	</div>
+	
+	<div>
+		<h3>Sample Layout Footer</h3>
+	</div>
+	
+	<!-- 이영역에는 다른 thymeleaf 페이지에서 
+	자바스크립트 코딩부분을 대입 -->
+	<th:block layout:fragment="script"/>
+</body>
+</html>
+
+

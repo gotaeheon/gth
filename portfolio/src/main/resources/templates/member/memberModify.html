@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>회원정보 수정</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <th:block th:replace="layout/head-css :: commonCss"></th:block>
+    <style>
+        .form-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="layout/header :: header"></th:block>
+<main>
+	<div class="container mt-5 mb-5">
+	    <div class="form-wrapper">
+	        <h2 class="mb-4 text-center">회원정보 수정</h2>
+	
+	        <form th:action="@{/member/memberModify}" th:object="${memberDTO}" method="post">
+	            <div class="mb-3">
+	                <label for="mbId" class="form-label">아이디</label>
+	                <input type="text" th:field="*{mbId}" id="mbId" class="form-control" readonly>
+	            </div>
+	
+	            <div class="mb-3">
+	                <label for="mbName" class="form-label">이름</label>
+	                <input type="text" th:field="*{mbName}" id="mbName" class="form-control">
+	            </div>
+	
+	            <div class="mb-3">
+	                <label for="mbNick" class="form-label">닉네임</label>
+	                <input type="text" th:field="*{mbNick}" id="mbNick" class="form-control">
+	            </div>
+	
+	            <div class="mb-3">
+				    <label class="form-label d-block">성별</label>
+				    <div class="form-check form-check-inline">
+				        <input class="form-check-input" type="radio" th:field="*{mbGender}" value="M" id="man">
+				        <label class="form-check-label" for="man">남</label>
+				    </div>
+				    <div class="form-check form-check-inline">
+				        <input class="form-check-input" type="radio" th:field="*{mbGender}" value="F" id="woman">
+				        <label class="form-check-label" for="woman">여</label>
+				    </div>
+				</div>
+	            
+	
+	            <div class="mb-3">
+	                <label for="mbHp" class="form-label">연락처</label>
+	                <input type="text" th:field="*{mbHp}" id="mbHp" class="form-control">
+	            </div>
+	
+	            <div class="mb-3">
+	                <label for="mbEmail" class="form-label">이메일</label>
+	                <input type="email" th:field="*{mbEmail}" id="mbEmail" class="form-control">
+	            </div>
+	
+	            <div class="btn-group mt-4">
+	                <a th:href="@{/member/memberInfo}" class="btn btn-secondary">취소</a>
+	                <button type="submit" class="btn btn-primary">수정완료</button>
+	            </div>
+	        </form>
+	    </div>
+	</div>
+</main>
+<th:block th:replace="layout/footer :: footer"></th:block>
+</body>
+</html>

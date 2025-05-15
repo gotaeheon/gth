@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html 
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"> 
+<title>메인화면</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<!--공통 CSS -->
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+</head>
+<body>
+<!--헤더 -->
+<th:block th:replace="layout/header :: header"></th:block>
+<main>
+    <!-- 리뷰 목록 출력 -->
+    <div class="container mt-5">
+    	<h1>일정 관리</h1>
+    	<!-- 검색 폼 -->
+	    <div class="d-flex justify-content-center mb-3">
+	    
+	      <form th:action="@{/admin/review-plans}" method="get" class="d-flex">
+	        <!-- 검색 조건 선택 -->
+	        <select name="searchType" class="form-select me-2" style="width: 150px;">
+	          <option th:value="DepartureRegionName" th:selected="${searchType == 'DepartureRegionName'}">출발지</option>
+	          <option th:value="ArrivalRegionName" th:selected="${searchType == 'ArrivalRegionName'}">도착지</option>
+	          <option th:value="HotelName" th:selected="${searchType == 'HotelName'}">숙소</option>
+	        </select>	        
+	        <input type="text" name="keyword" class="form-control me-2" th:value="${keyword}" style="width: 200px;" placeholder="검색어">	        
+	        <button type="submit" class="btn btn-primary me-1">검색</button>
+	        <a th:href="@{/admin/review-plans}" class="btn btn-outline-secondary">초기화</a>
+	      </form>
+	    </div>
+	    <div class="mb-3">
+	        <a class="btn btn-primary" th:href="@{/admin/review-plans/chart}">차트로 보기</a>
+	    </div>
+		<!-- 검색 결과가 없을 경우 메시지 -->
+	    <div class="col text-center" th:if="${#lists.isEmpty(plans)}">
+	      <p class="text-muted fs-5">등록된 일정이 없습니다.</p>
+	    </div>
+	    <table class="table table-bordered">
+		    <thead>
+		        <tr>
+		            <th>추천일정 제목</th>
+		            <th>평균 평점</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+			    <tr th:each="plans : ${plans}">
+			        <!-- 추천 일정 제목: 출발지 → 숙소 → 도착지 -->
+			        <td th:text="${plans.plan.departureRegionName + ' → ' + plans.plan.hotelName  + ' → ' + plans.plan.arrivalRegionName}"></td>
+			        <td th:text="${plans.avgRating + ' / 5'}"></td>
+			    </tr>
+			</tbody>
+		</table>
+		<!-- 페이징 처리 -->
+            <nav aria-label="Page navigation" th:if="${not #lists.isEmpty(plans)}">
+		      <ul class="pagination justify-content-center">
+		   
+		        <!-- 이전 페이지 버튼 -->
+		        <li class="page-item" th:class="${currentPage == 1 ? 'disabled' : ''}">
+		          <a class="page-link"
+				   th:href="@{/admin/review-plans(page=${currentPage - 1}, searchType=${searchType}, keyword=${keyword})}"
+				   aria-label="Previous">
+				  <span aria-hidden="true">&laquo;</span>
+				</a>
+		        </li>
+		
+		        <!-- 페이지 번호 표시 -->
+		        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+		            th:class="${i == currentPage ? 'page-item active' : 'page-item'}">
+		          <a class="page-link"
+		             th:href="@{/admin/review-plans(page=${i}, searchType=${searchType}, keyword=${keyword})}"
+		             th:text="${i}"></a>
+		        </li>
+		
+		        <!-- 다음 페이지 버튼 -->
+		        <li class="page-item" th:class="${currentPage == totalPages ? 'disabled' : ''}">
+		          <a class="page-link"
+					   th:href="@{/admin/review-plans(page=${currentPage + 1}, searchType=${searchType}, keyword=${keyword})}"
+					   aria-label="Next">
+					  <span aria-hidden="true">&raquo;</span>
+					</a>
+		        </li>
+		      </ul>
+		    </nav>
+	</div>
+</main>
+<!--푸터-->
+<th:block th:replace="layout/footer :: footer"></th:block>
+</body>
+</html>

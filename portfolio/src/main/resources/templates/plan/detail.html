@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>여행 추천 결과</title>
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+<style>
+	#map {
+		width: 100%;
+		height: 70vh;
+	}
+
+	.info {
+		padding: 20px;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		height: 70vh;
+            overflow-y: auto;
+        }
+        .alert-close-icon {
+        font-size: 1.5rem;
+        color: #ffffff;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .alert-close-icon:hover {
+        color: #f1c40f; /* Hover 시 색 변경 (예: 금색) */
+        transform: rotate(90deg); /* 클릭 시 회전 효과 */
+    }
+
+    .alert {
+        position: relative;
+        padding-right: 40px; /* 버튼 공간 확보 */
+    }
+
+    .close {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+    }
+    </style>
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a86751dd8124c7521eb9574a90e645f6&libraries=services"></script>
+</head>
+<body>
+<th:block th:replace="layout/header :: header"></th:block>
+<main>
+<div class="container mt-5 mb-5">
+	<!-- 성공 메시지 알림 -->
+	<div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+	  <span th:text="${success}">일정이 저장되었습니다.</span>
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	
+	<!-- 실패 메시지 알림 -->
+	<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+	  <span th:text="${error}">일정 저장에 실패했습니다.</span>
+	  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+  <div class="row">
+    <div class="col-md-8">
+      <div id="map"></div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="info">
+        <h2 class="mb-4">여행 상세 정보</h2>
+        
+        <div class="mb-3">
+          <strong>출발지:</strong> <span th:text="${plan.departureRegionName}">출발지</span><br>
+          <strong>출발편:</strong> <span th:text="${plan.departureTransportInfo}">출발편</span><br>
+          <strong>가격:</strong> ₩<span th:text="${#numbers.formatInteger(plan.departurePrice, 3, 'COMMA')}"></span>원
+        </div>
+
+        <div class="mb-3">
+          <strong>숙소:</strong> <span th:text="${plan.hotelName}">숙소</span>
+          <strong>주소:</strong> <span th:text="${plan.hotelAddress}">주소</span><br>
+          <strong>가격:</strong> ₩<span th:text="${#numbers.formatInteger(plan.hotelPrice, 3, 'COMMA')}"></span>원<br>
+          <a th:href="${plan.detailUrl}" target="_blank" class="btn btn-link p-0">홈페이지로 이동</a>
+        </div>
+
+        <div class="mb-3">
+          <strong>도착지:</strong> <span th:text="${plan.arrivalRegionName}">도착지</span><br>
+          <strong>복귀편:</strong> <span th:text="${plan.returnTransportInfo}">복귀편</span><br>
+          <strong>가격:</strong> ₩<span th:text=" ${#numbers.formatInteger(plan.returnPrice, 3, 'COMMA')}"></span>원<br>
+        </div>
+        
+        <div class="mb-3">
+        <h2><strong>총 비용:</strong> ₩<span th:text="${#numbers.formatInteger(plan.totalPrice, 3, 'COMMA')}"></span>원</h2>
+		</div>
+		
+        <form th:action="@{/plans/save}" method="post" class="mb-4">
+          <input type="hidden" name="planId" th:value="${plan.planId}" />
+          <button class="btn btn-success">마이 페이지에 저장</button>
+        </form>
+
+        <!-- 뒤로 가기 버튼 추가 -->
+        <a th:href="@{/home}" class="btn btn-secondary">다시 검색하기</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<!--푸터-->
+<th:block th:replace="layout/footer :: footer"></th:block>
+
+<script th:inline="javascript">
+    // Thymeleaf에서 전달된 출발지, 숙소, 도착지 정보
+    let departureAddress = /*[[${plan.departureRegionName}]]*/{};  //
+    let hotelAddress = /*[[${plan.hotelAddress}]]*/{};  //
+    let arrivalAddress = /*[[${plan.arrivalRegionName}]]*/{};  // 
+
+    // 지도 생성
+    let mapContainer = document.getElementById('map');
+    let mapOption = {
+        center: new kakao.maps.LatLng(35.1796, 129.0756), // 기본 중심 좌표
+        level: 7
+    };
+
+    let map = new kakao.maps.Map(mapContainer, mapOption);
+    let geocoder = new kakao.maps.services.Geocoder();
+
+    // 경로를 그릴 함수
+    function drawRoute(path) {
+        let polyline = new kakao.maps.Polyline({
+            path: path,
+            strokeWeight: 5,  // 선의 두께
+            strokeColor: '#FF0000',  // 선의 색깔
+            strokeOpacity: 1,  // 선의 투명도
+            strokeStyle: 'solid'  // 선의 스타일 (실선)
+        });
+
+        polyline.setMap(map);  // 지도에 경로 추가
+    }
+
+    // 주소를 위도, 경도로 변환하여 마커를 표시하는 함수
+    function addMarker(address, title) {
+        return new Promise((resolve, reject) => {
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    let marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    let content = ` 
+                        <div style="padding:5px;font-size:14px;">
+                            <strong>${title}</strong><br/>
+                            ${address}
+                        </div>
+                    `;
+
+                    let infowindow = new kakao.maps.InfoWindow({ content: content });
+
+                    kakao.maps.event.addListener(marker, 'click', function () {
+                        infowindow.open(map, marker);
+                    });
+
+                    resolve(coords);  // 위도, 경도를 반환
+                } else {
+                    reject('주소 변환 실패');
+                }
+            });
+        });
+    }
+
+    // 출발지, 숙소, 도착지 마커 추가 및 경로 그리기
+    Promise.all([
+        addMarker(departureAddress, '출발지'),
+        addMarker(hotelAddress, '숙소'),
+        addMarker(arrivalAddress, '복귀편')
+    ]).then(coordsArray => {
+        // 모든 마커의 좌표를 이용해 경로를 그립니다.
+        drawRoute(coordsArray);
+        map.setCenter(coordsArray[1]);  // 출발지 마커를 중심으로 설정
+    }).catch(error => {
+        console.error(error);
+    });
+</script>
+</body>
+</html>

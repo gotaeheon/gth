@@ -1,0 +1,103 @@
+<th:block th:fragment="header">
+  <header id="header" class="header fixed-top bg-white shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-light px-3">
+      <div class="container-fluid">
+        <a href="/home" class="navbar-brand fw-bold">yeohaeng</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+          <ul class="navbar-nav align-items-center gap-2">
+
+            <!-- 누구나 접근 가능 -->
+            <li class="nav-item">
+              <a class="nav-link" href="/home">추천일정</a>
+            </li>
+
+            <!-- 게시판 드롭다운 -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="boardDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">
+                게시판
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="boardDropdown">
+                <li>
+                  <a th:if="${#authentication.principal != 'anonymousUser'}"
+                     class="dropdown-item" href="/board/list">자유게시판</a>
+                  <a th:if="${#authentication.principal == 'anonymousUser'}"
+                     class="dropdown-item" href="#" onclick="needLogin(event)">자유게시판</a>
+                </li>
+                <li>
+                  <a th:if="${#authentication.principal != 'anonymousUser'}"
+                     class="dropdown-item" href="/plans/reviews">리뷰게시판</a>
+                  <a th:if="${#authentication.principal == 'anonymousUser'}"
+                     class="dropdown-item" href="#" onclick="needLogin(event)">리뷰게시판</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- 마이페이지 드롭다운 -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="mypageDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">
+                마이페이지
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="mypageDropdown">
+                <li>
+                  <a th:if="${#authentication.principal != 'anonymousUser'}"
+                     class="dropdown-item" href="/member/memberInfo">내정보</a>
+                  <a th:if="${#authentication.principal == 'anonymousUser'}"
+                     class="dropdown-item" href="#" onclick="needLogin(event)">내정보</a>
+                </li>
+                <li>
+                  <a th:if="${#authentication.principal != 'anonymousUser'}"
+                     class="dropdown-item" href="/plans/mypage">내 일정</a>
+                  <a th:if="${#authentication.principal == 'anonymousUser'}"
+                     class="dropdown-item" href="#" onclick="needLogin(event)">내 일정</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- 관리자 메뉴 -->
+            <li class="nav-item dropdown" th:if="${#authentication.principal != 'anonymousUser' and #authentication.name == 'admin'}">
+              <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+                 data-bs-toggle="dropdown" aria-expanded="false">
+                관리자
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                <li><a class="dropdown-item" href="/admin/adminMemberList">회원관리</a></li>
+                <li><a class="dropdown-item" href="/admin/review-plans">일정관리</a></li>
+                <li><a class="dropdown-item" href="/admin/registerPlan">일정등록</a></li>
+              </ul>
+            </li>
+
+            <!-- 로그인 / 사용자 이름 / 로그아웃 -->
+            <li class="nav-item" th:if="${#authentication.principal == 'anonymousUser'}">
+              <a class="nav-link" href="/member/login">로그인</a>
+            </li>
+            <li class="nav-item" th:if="${#authentication.principal != 'anonymousUser'}">
+              <span class="nav-link disabled" th:text="${#authentication.principal.mbId + ' 님'}"></span>
+            </li>
+            <li class="nav-item" th:if="${#authentication.principal != 'anonymousUser'}">
+              <a class="nav-link" href="/member/logout">로그아웃</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 로그인 유도 스크립트 -->
+    <script>
+      function needLogin(event) {
+        event.preventDefault();
+        if (confirm("로그인 후 이용 바랍니다. 로그인 페이지로 이동하시겠습니까?")) {
+          window.location.href = "/member/login";
+        }
+      }
+    </script>
+  </header>
+</th:block>

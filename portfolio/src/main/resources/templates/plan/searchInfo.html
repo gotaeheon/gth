@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>여행 추천 결과</title>
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+</head>
+<body>
+<!-- 헤더 -->
+<th:block th:replace="layout/header :: header"></th:block>
+<main>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">예산에 맞는 여행 추천 결과</h2>
+
+    <!-- 조건에 맞는 여행 계획이 없을 때 -->
+    <div th:if="${plans.size() == 0}" class="alert alert-warning text-center">
+        <p>조건에 맞는 여행 계획이 없습니다.</p>
+    </div>
+
+    <!-- 여행 계획 리스트 -->
+    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${plans.size() > 0}">
+        <div class="col" th:each="plan : ${plans}">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <span th:text="${plan.departureRegionName}">출발지</span> → 
+                        <span th:text="${plan.arrivalRegionName}">도착지</span>
+                    </h5>
+                    <p class="card-text">
+                        <strong>출발편:</strong><br>
+                        <span th:text="${plan.departureTransportType}"></span> (
+                        <span th:text="${plan.departureCompany}"></span>)<br>
+                        <span th:text="${plan.departureTime}"></span> →
+                        <span th:text="${plan.departureArrivalTime}"></span><br>
+                        ₩<span th:text="${plan.departurePrice}"></span><br><br>
+
+                        <strong>숙소:</strong><br>
+                        <span th:text="${plan.hotelName}"></span><br>
+                        ₩<span th:text="${plan.hotelPrice}"></span><br>
+                        <span th:text="${plan.hotelAddress}"></span><br><br>
+
+                        <strong>복귀편:</strong><br>
+                        <span th:text="${plan.returnTransportType}"></span> (
+                        <span th:text="${plan.returnCompany}"></span>)<br>
+                        <span th:text="${plan.returnTime}"></span> →
+                        <span th:text="${plan.returnArrivalTime}"></span><br>
+                        ₩<span th:text="${plan.returnPrice}"></span><br><br>
+
+                        <strong>총 비용:</strong> ₩<span th:text="${plan.totalPrice}"></span>
+                	</p>
+                </div>
+                <div class="card-footer text-center">
+                    <!-- 상세 보기 버튼 -->
+                    <a class="btn btn-outline-primary"
+					   th:href="@{'/plans/detail/' + ${plan.planId}}">
+					   상세 보기
+					</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 홈으로 돌아가기 버튼 -->
+    <div class="text-center mt-4">
+        <a th:href="@{/home}" class="btn btn-secondary mb-4">홈으로</a>
+    </div>
+</div>
+</main>
+<!-- 푸터 -->
+<th:block th:replace="layout/footer :: footer"></th:block>
+</body>
+</html>

@@ -1,0 +1,133 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.1'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+}
+
+group = 'org.fintech'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+/*jar파일을 다운로드 받는 위치 설정*/
+repositories {
+	mavenCentral()
+}
+
+/*Spring Framework의 POM.XML에 설정하는 것과 동일
+implementation: RunTime과 Compile시 필요한 의존성을 설정
+compileOnly: Compile시점에만 라이브러리 적용
+developmentOnly: 프로젝트가 개발모드일때만 라이브러리 적용
+annotationProcessor: Annotation Processor 사용시에만 적용
+testImplementation: 테스트시 적용
+testRuntimeOnly: 테스트 실행시에만 적용*/
+dependencies {
+	//기본 설치 사항 03.20
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	/*mariadb jdbc 드라이버를 설정 추가 03.20*/
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	
+	/*JPA(Java Persistence API) 관련 설정 추가 03.20*/
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	
+	//p428 thymeleaf layout 기능 추가
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+	//QueryDSL 관련 설정 추가
+	implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+	
+	//p460 ModelMapper 라이브러리 추가
+	implementation "org.modelmapper:modelmapper:3.1.0"
+	
+	//p487 유효성검사 관련 라이브러리 추가
+	implementation "org.springframework.boot:spring-boot-starter-validation"
+	
+	//p515 Swagger3 라이브러리 추가
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+	
+	//p603 썸네일 관련 라이브러리 추가
+	implementation 'net.coobird:thumbnailator:0.4.16'
+	
+	//p678 보안 처리
+	implementation 'org.springframework.security:spring-security-core:6.0.1'
+	implementation 'org.springframework.security:spring-security-web:6.0.1'
+	implementation 'org.springframework.security:spring-security-config:6.0.1'
+	testImplementation 'org.springframework.security:spring-security-test:6.0.1'
+	
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	
+	//p743 소셜로그인
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+def generated = "${project.buildDir}/board"
+
+//querydslSourcesDir: Querydsl 소스가 생성될 디렉토리를 설정합니다.
+querydsl {
+    jpa = true
+    querydslSourcesDir = generated
+}
+
+//sourceSets: Querydsl이 생성한 소스 코드를 main 소스 세트에 추가합니다
+sourceSets {
+    main.java.srcDir generated
+}
+
+
+//cleanGenerated => 빌드 디렉토리 내의 Querydsl 소스를 삭제하는 작업을 정의
+tasks.register('cleanGenerated', Delete) {
+    delete generated
+}
+
+//clean 작업이 cleanGenerated 작업을 실행하도록 설정합니다.
+clean.dependsOn(cleanGenerated)
+
+// compileQuerydsl 작업이 clean 작업을 의존하도록 설정하여, compileQuerydsl을 실행하기 전에 clean 작업을 수행합니다.
+tasks.named("compileQuerydsl").configure {
+    dependsOn(clean)
+}
+
+//Querydsl 플러그인에서 제공하는 태스크로, Querydsl 관련 Q타입 클래스를 생성하는 역할
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+// Java 소스 컴파일 시 사용할 수 있는 클래스 파일과 의존성을 포함
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
