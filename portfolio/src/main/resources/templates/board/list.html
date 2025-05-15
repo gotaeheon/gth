@@ -2,151 +2,149 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>자유게시판</title>
-    <th:block th:replace="layout/head-css :: commonCss"></th:block>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            text-align: left;
-            padding: 10px;
-        }
-        th {
-            font-weight: bold;
-            border-top: 2px solid #ddd; /* 제목과 작성자 위에 선 추가 */
-        }
-        td {
-            border-top: 1px solid #ddd;
-        }
-        .title {
-            font-weight: bold;
-        }
-        .writer, .reg-date {
-            font-weight: normal;
-            color: #6c757d;
-        }
-        .view-count, .like-count {
-            font-weight: lighter;
-            color: #6c757d;
-        }
-        .table td, .table th {
-            border-left: none;
-            border-right: none;
-        }
-        .table th:first-child, .table td:first-child {
-            padding-left: 20px;
-        }
-        .table th:last-child, .table td:last-child {
-            padding-right: 20px;
-        }
-        .create-btn {
-            margin-top: 20px;
-            display: flex;
-            justify-content: flex-end;
-        }
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>자유게시판</title>
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+<style>
 
-        /* 마우스 오버 효과 */
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-    </style>
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	th, td {
+		text-align: left;
+            padding: 10px;
+	}
+	th {
+		font-weight: bold;
+		border-top: 2px solid #ddd; /* 제목과 작성자 위에 선 추가 */
+	}
+	td {
+		border-top: 1px solid #ddd;
+	}
+	.title {
+		font-weight: bold;
+	}
+	.writer, .reg-date {
+		font-weight: normal;
+		color: #6c757d;
+	}
+	.view-count, .like-count {
+		font-weight: lighter;
+		color: #6c757d;
+	}
+	.table td, .table th {
+		border-left: none;
+		border-right: none;
+	}
+	.table th:first-child, .table td:first-child {
+		padding-left: 20px;
+	}
+	.table th:last-child, .table td:last-child {
+		padding-right: 20px;
+	}
+	.create-btn {
+		margin-top: 20px;
+		display: flex;
+		justify-content: flex-end;
+	}
+	/* 마우스 오버 효과 */
+	.table tbody tr:hover {
+		background-color: #f8f9fa;
+	}
+</style>
 </head>
 <body>
 <!-- 헤더 -->
 <th:block th:replace="layout/header :: header"></th:block>
-
-<main>
-    <div class="container mt-5">
-        <h2 class="mb-4 fw-bold text-center">자유게시판</h2>
-
-        <!-- 검색 폼 -->
-        <form th:action="@{/board/list}" method="get" class="row g-2 justify-content-center mb-4">
-            <div class="col-auto">
-                <select name="searchType" class="form-select">
-                    <option th:value="title" th:selected="${searchType == 'title'}">제목</option>
-                    <option th:value="content" th:selected="${searchType == 'content'}">내용</option>
-                    <option th:value="writer" th:selected="${searchType == 'writer'}">작성자</option>
-                    <option th:value="title_content" th:selected="${searchType == 'title_content'}">제목+내용</option>
-                </select>
-            </div>
-            <div class="col-auto">
-                <input type="text" name="keyword" class="form-control" th:value="${keyword}" placeholder="검색어">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">검색</button>
-            </div>
-            <div class="col-auto">
-                <a th:href="@{/board/list}" class="btn btn-outline-secondary">초기화</a>
-            </div>
-        </form>
-
-        <!-- 게시물 리스트 (테이블) -->
-        <div th:if="${#lists.isEmpty(boards)}">
-            <p class="text-center text-muted">등록된 게시물이 없습니다.</p>
-        </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>등록일</th>
-                    <th>조회수</th>
-                    <th>좋아요</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="board : ${boards}">
-                    <td class="title">
-                        <a th:href="@{/board/{bno}(bno=${board.bno}, page=${currentPage})}"
-                           th:text="${board.title}" class="text-decoration-none text-dark"></a>
-                    </td>
-                    <td class="writer" th:text="${board.writer}"></td>
-                    <td class="reg-date" th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd')}"></td>
-                    <td class="view-count" th:text="${board.viewCount}"></td>
-                    <td class="like-count" th:text="${board.likeCount}"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- 게시물 작성 버튼 (리스트 아래 오른쪽에 위치) -->
-        <div class="create-btn">
-            <a href="/board/register" class="btn btn-primary">글쓰기</a>
-        </div>
-
-        <!-- 페이지네이션 -->
-        <nav class="mt-4" th:if="${not #lists.isEmpty(boards)}">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/board/list(page=${currentPage - 1}, keyword=${keyword}, searchType=${searchType})}"
-                       aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
-                    th:classappend="${i == currentPage} ? 'active'">
-                    <a class="page-link"
-                       th:href="@{/board/list(page=${i}, searchType=${searchType}, keyword=${keyword})}"
-                       th:text="${i}"></a>
-                </li>
-
-                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                    <a class="page-link"
-                       th:href="@{/board/list(page=${currentPage + 1}, keyword=${keyword}, searchType=${searchType})}"
-                       aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</main>
-
+	<main>
+	    <div class="container mt-5">
+	        <h2 class="mb-4 fw-bold text-center">자유게시판</h2>
+	
+	        <!-- 검색 폼 -->
+	        <form th:action="@{/board/list}" method="get" class="row g-2 justify-content-center mb-4">
+	            <div class="col-auto">
+	                <select name="searchType" class="form-select">
+	                    <option th:value="title" th:selected="${searchType == 'title'}">제목</option>
+	                    <option th:value="content" th:selected="${searchType == 'content'}">내용</option>
+	                    <option th:value="writer" th:selected="${searchType == 'writer'}">작성자</option>
+	                    <option th:value="title_content" th:selected="${searchType == 'title_content'}">제목+내용</option>
+	                </select>
+	            </div>
+	            <div class="col-auto">
+	                <input type="text" name="keyword" class="form-control" th:value="${keyword}" placeholder="검색어">
+	            </div>
+	            <div class="col-auto">
+	                <button type="submit" class="btn btn-primary">검색</button>
+	            </div>
+	            <div class="col-auto">
+	                <a th:href="@{/board/list}" class="btn btn-outline-secondary">초기화</a>
+	            </div>
+	        </form>
+	
+	        <!-- 게시물 리스트 (테이블) -->
+	        <div th:if="${#lists.isEmpty(boards)}">
+	            <p class="text-center text-muted">등록된 게시물이 없습니다.</p>
+	        </div>
+	        <table class="table">
+	            <thead>
+	                <tr>
+	                    <th>제목</th>
+	                    <th>작성자</th>
+	                    <th>등록일</th>
+	                    <th>조회수</th>
+	                    <th>좋아요</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr th:each="board : ${boards}">
+	                    <td class="title">
+	                        <a th:href="@{/board/{bno}(bno=${board.bno}, page=${currentPage})}"
+	                           th:text="${board.title}" class="text-decoration-none text-dark"></a>
+	                    </td>
+	                    <td class="writer" th:text="${board.writer}"></td>
+	                    <td class="reg-date" th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd')}"></td>
+	                    <td class="view-count" th:text="${board.viewCount}"></td>
+	                    <td class="like-count" th:text="${board.likeCount}"></td>
+	                </tr>
+	            </tbody>
+	        </table>
+	
+	        <!-- 게시물 작성 버튼 (리스트 아래 오른쪽에 위치) -->
+	        <div class="create-btn">
+	            <a href="/board/register" class="btn btn-primary">글쓰기</a>
+	        </div>
+	
+	        <!-- 페이지네이션 -->
+	        <nav class="mt-4" th:if="${not #lists.isEmpty(boards)}">
+	            <ul class="pagination justify-content-center">
+	                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+	                    <a class="page-link"
+	                       th:href="@{/board/list(page=${currentPage - 1}, keyword=${keyword}, searchType=${searchType})}"
+	                       aria-label="Previous">
+	                        <span aria-hidden="true">&laquo;</span>
+	                    </a>
+	                </li>
+	
+	                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+	                    th:classappend="${i == currentPage} ? 'active'">
+	                    <a class="page-link"
+	                       th:href="@{/board/list(page=${i}, searchType=${searchType}, keyword=${keyword})}"
+	                       th:text="${i}"></a>
+	                </li>
+	
+	                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+	                    <a class="page-link"
+	                       th:href="@{/board/list(page=${currentPage + 1}, keyword=${keyword}, searchType=${searchType})}"
+	                       aria-label="Next">
+	                        <span aria-hidden="true">&raquo;</span>
+	                    </a>
+	                </li>
+	            </ul>
+	        </nav>
+	    </div>
+	</main>
 <!-- 푸터 -->
 <th:block th:replace="layout/footer :: footer"></th:block>
 </body>

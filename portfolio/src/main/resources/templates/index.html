@@ -2,109 +2,103 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>메인화면</title>
-  <th:block th:replace="layout/head-css :: commonCss"></th:block>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>메인화면</title>
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 <body>
-
 <!-- 헤더 -->
 <th:block th:replace="layout/header :: header"></th:block>
-
-<main class="main">
-
-  <!-- Hero 섹션 -->
-  <section id="hero" class="hero text-white text-center py-5">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <h1 class="display-4 fw-bold">여행어때</h1>
-          <p class="lead">원하는 예산으로 무작위 1박2일 여행 가기</p>
-        </div>
-        <div class="col-lg-6 hero-newsletter mt-4">
-          <p class="fw-semibold mb-3">출발지와 예산을 선택하세요!</p>
-          <form action="/plans/search" method="post" class="php-email-form hero-newsletter">
-            <div class="search-container">
-              <!-- 출발지 검색 -->
-              <select name="departureRegionId" class="form-select" required>
-                <option value="">출발지 선택</option>
-                <option value="1">서울</option>
-                <option value="2">부산</option>
-                <option value="3">대구</option>
-                <option value="4">인천</option>
-                <option value="5">광주</option>
-                <option value="6">대전</option>
-                <option value="7">울산</option>
-                <option value="8">세종</option>
-              </select>
-
-              <!-- 예산 입력 -->
-              <input name="budget" type="number" class="form-control" placeholder="예산 입력 예: 100000" required>
-
-              <!-- 검색 버튼 -->
-              <button type="submit" class="btn btn-accent">검색</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 인기 게시물 -->
-  <section class="container my-5">
-    <h3 class="section-title mb-4">🔥 인기 게시물</h3>
-    <hr />
-    <div class="row">
-      <div class="col-lg-3 col-md-4 col-sm-6 mb-4"
-           th:each="board, iterStat : ${popularBoards}" th:if="${iterStat.index < 4}">
-        <div class="card h-100 shadow-sm card-custom">
-          <img th:if="${board.thumbnailFileName != null}"
-               th:src="@{'/images/' + ${board.thumbnailFileName}}"
-               alt="썸네일"
-               class="card-img-top img-fluid object-fit-cover" style="height: 200px;" />
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-2" th:text="${board.title}">제목</h5>
-            <p class="card-text text-muted mb-3" th:text="'좋아요: ' + ${board.likeCount}">좋아요 수</p>
-            <a th:href="@{/board/{bno}(bno=${board.bno})}" class="btn btn-outline-primary btn-sm mt-auto">보러가기</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 인기 리뷰 -->
-  <section class="container my-5">
-    <h3 class="section-title mb-4">⭐ 인기 리뷰</h3>
-    <hr />
-    <div class="row">
-      <div class="col-lg-3 col-md-4 col-sm-6 mb-4"
-           th:each="review, iterStat : ${topRatedReviews}" th:if="${iterStat.index < 4}">
-        <div class="card h-100 shadow-sm card-custom">
-          <img th:if="${review.thumbnailFileName != null}"
-               th:src="@{'/images/' + ${review.thumbnailFileName}}"
-               alt="썸네일"
-               class="card-img-top img-fluid object-fit-cover" style="height: 200px;" />
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-2" th:text="${review.reTitle}">제목</h5>
-            <p class="card-text mb-3">
-              <strong>평점:</strong>
-              <span th:each="i : ${#numbers.sequence(1, 5)}">
-                <i th:class="${i <= review.reScore} ? 'bi bi-star-fill text-warning' : 'bi bi-star'"></i>
-              </span>
-            </p>
-            <a th:href="@{/plans/reviews/{rno}(rno=${review.reNo})}" class="btn btn-outline-primary btn-sm mt-auto">리뷰 보기</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
+	<main class="main">
+	  <!-- Hero 섹션 -->
+	  <section id="hero" class="hero text-white text-center py-5">
+	    <div class="container">
+	      <div class="row justify-content-center">
+	        <div class="col-lg-8">
+	          <h1 class="display-4 fw-bold">여행어때</h1>
+	          <p class="lead">원하는 예산으로 무작위 1박2일 여행 가기</p>
+	        </div>
+	        <div class="col-lg-6 hero-newsletter mt-4">
+	          <p class="fw-semibold mb-3">출발지와 예산을 선택하세요!</p>
+	          <form action="/plans/search" method="post" class="php-email-form hero-newsletter">
+	            <div class="search-container">
+	              <!-- 출발지 검색 -->
+	              <select name="departureRegionId" class="form-select" required>
+	                <option value="">출발지 선택</option>
+	                <option value="1">서울</option>
+	                <option value="2">부산</option>
+	                <option value="3">대구</option>
+	                <option value="4">인천</option>
+	                <option value="5">광주</option>
+	                <option value="6">대전</option>
+	                <option value="7">울산</option>
+	                <option value="8">세종</option>
+	              </select>
+	
+	              <!-- 예산 입력 -->
+	              <input name="budget" type="number" class="form-control" placeholder="예산 입력 예: 100000" required>
+	
+	              <!-- 검색 버튼 -->
+	              <button type="submit" class="btn btn-accent">검색</button>
+	            </div>
+	          </form>
+	        </div>
+	      </div>
+	    </div>
+	  </section>
+	
+	  <!-- 인기 게시물 -->
+	  <section class="container my-5">
+	    <h3 class="section-title mb-4">🔥 인기 게시물</h3>
+	    <hr />
+	    <div class="row">
+	      <div class="col-lg-3 col-md-4 col-sm-6 mb-4"
+	           th:each="board, iterStat : ${popularBoards}" th:if="${iterStat.index < 4}">
+	        <div class="card h-100 shadow-sm card-custom">
+	          <img th:if="${board.thumbnailFileName != null}"
+	               th:src="@{'/images/' + ${board.thumbnailFileName}}"
+	               alt="썸네일"
+	               class="card-img-top img-fluid object-fit-cover" style="height: 200px;" />
+	          <div class="card-body d-flex flex-column">
+	            <h5 class="card-title mb-2" th:text="${board.title}">제목</h5>
+	            <p class="card-text text-muted mb-3" th:text="'좋아요: ' + ${board.likeCount}">좋아요 수</p>
+	            <a th:href="@{/board/{bno}(bno=${board.bno})}" class="btn btn-outline-primary btn-sm mt-auto">보러가기</a>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </section>
+	
+	  <!-- 인기 리뷰 -->
+	  <section class="container my-5">
+	    <h3 class="section-title mb-4">⭐ 인기 리뷰</h3>
+	    <hr />
+	    <div class="row">
+	      <div class="col-lg-3 col-md-4 col-sm-6 mb-4"
+	           th:each="review, iterStat : ${topRatedReviews}" th:if="${iterStat.index < 4}">
+	        <div class="card h-100 shadow-sm card-custom">
+	          <img th:if="${review.thumbnailFileName != null}"
+	               th:src="@{'/images/' + ${review.thumbnailFileName}}"
+	               alt="썸네일"
+	               class="card-img-top img-fluid object-fit-cover" style="height: 200px;" />
+	          <div class="card-body d-flex flex-column">
+	            <h5 class="card-title mb-2" th:text="${review.reTitle}">제목</h5>
+	            <p class="card-text mb-3">
+	              <strong>평점:</strong>
+	              <span th:each="i : ${#numbers.sequence(1, 5)}">
+	                <i th:class="${i <= review.reScore} ? 'bi bi-star-fill text-warning' : 'bi bi-star'"></i>
+	              </span>
+	            </p>
+	            <a th:href="@{/plans/reviews/{rno}(rno=${review.reNo})}" class="btn btn-outline-primary btn-sm mt-auto">리뷰 보기</a>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </section>	
+	</main>
 <!-- 푸터 -->
 <th:block th:replace="layout/footer :: footer"></th:block>
-
 </body>
 </html>

@@ -1,110 +1,108 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>자유게시판 - 게시물 상세보기</title>
-  <!-- 공통 CSS 불러오기 -->
-  <th:block th:replace="layout/head-css :: commonCss"></th:block>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>자유게시판 - 게시물 상세보기</title>
+<!-- 공통 CSS -->
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<!-- 공통 헤더 삽입 -->
+<!-- 공통 헤더-->
 <th:block th:replace="layout/header :: header"></th:block> 
-
-<main>
-  <div class="container mt-5 mb-5">
-    <div class="card shadow-sm p-4">
-      <!-- 제목 -->
-      <h2 class="card-title" th:text="${board.title}"></h2>
-      <hr />
-      <!-- 작성자 정보 -->
-      <div class="text-muted mb-3">
-        <small>
-          작성자: <span th:text="${board.writer}"></span> |
-          등록일: <span th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}"></span> |
-          조회수: <span th:text="${board.viewCount}"></span> |
-          좋아요: <span th:text="${board.likeCount}"></span>
-        </small>
-      </div>
-      <hr />
-      <!-- 본문 내용 -->
-      <div class="mb-3" th:text="${board.content}"></div>
-      <!-- 이미지 출력 -->
-      <div class="row g-2 mb-4">
-        <div class="col-md-4" th:each="image : ${images}">
-          <img th:src="@{'/images/' + ${image.uuid} + '_' + ${image.fileName}}"
-               class="img-fluid rounded"
-               style="height: 200px; object-fit: cover;" />
-        </div>
-      </div>
-      <!-- 좋아요 버튼 -->
-      <div class="text-center mb-4">
-        <form th:action="@{/board/{bno}/like(bno=${board.bno})}" method="post">
-          <button class="btn btn-danger btn-lg" type="submit">❤ 좋아요</button>
-        </form>
-      </div>
-      <!-- 작성자일 때만 수정/삭제 -->
-      <div class="d-flex justify-content-center gap-2">
-        <th:block th:if="${#authentication.principal.mbId == board.writer}">
-          <form th:action="@{/board/{bno}/delete(bno=${board.bno})}" method="post">
-            <button class="btn btn-outline-danger">삭제</button>
-          </form>
-          <a th:href="@{/board/{bno}/edit(bno=${board.bno}, page=${page})}" class="btn btn-outline-warning">수정</a>
-        </th:block>
-        <a th:href="@{/board/list(page=${page})}" class="btn btn-outline-primary">목록으로</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- 댓글 -->
-  <div class="comment-section container mt-5">
-    <h4>댓글</h4>      
-    <!-- 댓글 목록 -->
-    <div class="comment-list mt-4">
-      <div class="comment-box border rounded p-3 mb-3" th:each="comment : ${comments}" th:id="'comment-box-' + ${comment.commentId}">
-        <!-- 댓글 작성자 및 작성일 -->
-        <div class="d-flex justify-content-between">
-          <strong th:text="${comment.mbId}">작성자</strong>
-          <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
-        </div>
-
-        <!-- 댓글 본문 -->
-        <p class="mt-2 comment-content" th:id="'comment-content-' + ${comment.commentId}" th:text="${comment.content}">댓글 내용</p>
-
-        <!-- 댓글 수정 폼 (기본 숨김) -->
-        <form class="mt-2 mb-2" th:id="'edit-form-' + ${comment.commentId}" th:action="@{/board/{bno}/comment/{commentId}/edit(bno=${board.bno}, commentId=${comment.commentId})}" method="post" style="display: none;">
-          <input type="text" name="newContent" th:value="${comment.content}" class="form-control mb-2">
-          <div class="text-end">
-            <button type="submit" class="btn btn-sm btn-success">저장</button>
-            <button type="button" class="btn btn-sm btn-secondary" th:onclick="'cancelEdit(' + ${comment.commentId} + ')'">취소</button>
-          </div>
-        </form>
-        <!-- 본인 댓글만 수정/삭제 가능 -->
-        <div class="text-end" th:if="${#authentication.principal.mbId == comment.mbId}">
-          <!-- 삭제 -->
-          <form th:action="@{/board/{bno}/comment/{commentId}/delete(bno=${board.bno}, commentId=${comment.commentId})}" method="post" style="display:inline;">
-            <button class="btn btn-sm btn-outline-danger">삭제</button>
-          </form>
-          <!-- 수정 -->
-          <button type="button" class="btn btn-sm btn-outline-warning" th:onclick="'editComment(' + ${comment.commentId} + ')'">수정</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 댓글 작성 폼 -->
-    <form th:action="@{/board/{bno}/comment(bno=${board.bno})}" method="post">
-      <input type="hidden" name="bno" th:value="${board.bno}">
-      <div class="mb-3">
-        <textarea name="content" class="form-control" rows="3" placeholder="댓글을 입력하세요..." required></textarea>
-      </div>
-      <div class="mb-3 text-end">
-        <button type="submit" class="btn btn-primary">댓글 작성</button>
-      </div>
-    </form>
-  </div>
-</main>
-
+	<main>
+	  <div class="container mt-5 mb-5">
+	    <div class="card shadow-sm p-4">
+	      <!-- 제목 -->
+	      <h2 class="card-title" th:text="${board.title}"></h2>
+	      <hr />
+	      <!-- 작성자 정보 -->
+	      <div class="text-muted mb-3">
+	        <small>
+	          작성자: <span th:text="${board.writer}"></span> |
+	          등록일: <span th:text="${#temporals.format(board.regDate, 'yyyy-MM-dd HH:mm')}"></span> |
+	          조회수: <span th:text="${board.viewCount}"></span> |
+	          좋아요: <span th:text="${board.likeCount}"></span>
+	        </small>
+	      </div>
+	      <hr />
+	      <!-- 본문 내용 -->
+	      <div class="mb-3" th:text="${board.content}"></div>
+	      <!-- 이미지 출력 -->
+	      <div class="row g-2 mb-4">
+	        <div class="col-md-4" th:each="image : ${images}">
+	          <img th:src="@{'/images/' + ${image.uuid} + '_' + ${image.fileName}}"
+	               class="img-fluid rounded"
+	               style="height: 200px; object-fit: cover;" />
+	        </div>
+	      </div>
+	      <!-- 좋아요 버튼 -->
+	      <div class="text-center mb-4">
+	        <form th:action="@{/board/{bno}/like(bno=${board.bno})}" method="post">
+	          <button class="btn btn-danger btn-lg" type="submit">❤ 좋아요</button>
+	        </form>
+	      </div>
+	      <!-- 작성자일 때만 수정/삭제 -->
+	      <div class="d-flex justify-content-center gap-2">
+	        <th:block th:if="${#authentication.principal.mbId == board.writer}">
+	          <form th:action="@{/board/{bno}/delete(bno=${board.bno})}" method="post">
+	            <button class="btn btn-outline-danger">삭제</button>
+	          </form>
+	          <a th:href="@{/board/{bno}/edit(bno=${board.bno}, page=${page})}" class="btn btn-outline-warning">수정</a>
+	        </th:block>
+	        <a th:href="@{/board/list(page=${page})}" class="btn btn-outline-primary">목록으로</a>
+	      </div>
+	    </div>
+	  </div>
+	
+	  <!-- 댓글 -->
+	  <div class="comment-section container mt-5">
+	    <h4>댓글</h4>      
+	    <!-- 댓글 목록 -->
+	    <div class="comment-list mt-4">
+	      <div class="comment-box border rounded p-3 mb-3" th:each="comment : ${comments}" th:id="'comment-box-' + ${comment.commentId}">
+	        <!-- 댓글 작성자 및 작성일 -->
+	        <div class="d-flex justify-content-between">
+	          <strong th:text="${comment.mbId}">작성자</strong>
+	          <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</span>
+	        </div>
+	
+	        <!-- 댓글 본문 -->
+	        <p class="mt-2 comment-content" th:id="'comment-content-' + ${comment.commentId}" th:text="${comment.content}">댓글 내용</p>
+	
+	        <!-- 댓글 수정 폼 (기본 숨김) -->
+	        <form class="mt-2 mb-2" th:id="'edit-form-' + ${comment.commentId}" th:action="@{/board/{bno}/comment/{commentId}/edit(bno=${board.bno}, commentId=${comment.commentId})}" method="post" style="display: none;">
+	          <input type="text" name="newContent" th:value="${comment.content}" class="form-control mb-2">
+	          <div class="text-end">
+	            <button type="submit" class="btn btn-sm btn-success">저장</button>
+	            <button type="button" class="btn btn-sm btn-secondary" th:onclick="'cancelEdit(' + ${comment.commentId} + ')'">취소</button>
+	          </div>
+	        </form>
+	        <!-- 본인 댓글만 수정/삭제 가능 -->
+	        <div class="text-end" th:if="${#authentication.principal.mbId == comment.mbId}">
+	          <!-- 삭제 -->
+	          <form th:action="@{/board/{bno}/comment/{commentId}/delete(bno=${board.bno}, commentId=${comment.commentId})}" method="post" style="display:inline;">
+	            <button class="btn btn-sm btn-outline-danger">삭제</button>
+	          </form>
+	          <!-- 수정 -->
+	          <button type="button" class="btn btn-sm btn-outline-warning" th:onclick="'editComment(' + ${comment.commentId} + ')'">수정</button>
+	        </div>
+	      </div>
+	    </div>
+	
+	    <!-- 댓글 작성 폼 -->
+	    <form th:action="@{/board/{bno}/comment(bno=${board.bno})}" method="post">
+	      <input type="hidden" name="bno" th:value="${board.bno}">
+	      <div class="mb-3">
+	        <textarea name="content" class="form-control" rows="3" placeholder="댓글을 입력하세요..." required></textarea>
+	      </div>
+	      <div class="mb-3 text-end">
+	        <button type="submit" class="btn btn-primary">댓글 작성</button>
+	      </div>
+	    </form>
+	  </div>
+	</main>
 <!-- 푸터 삽입 -->
 <th:block th:replace="layout/footer :: footer"></th:block>
 
@@ -120,6 +118,5 @@
     document.getElementById("edit-form-" + commentId).style.display = "none";
   }
 </script>
-
 </body>
 </html>

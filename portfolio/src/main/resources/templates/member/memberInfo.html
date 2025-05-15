@@ -3,70 +3,70 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>메인화면</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <!-- 공통 CSS -->
-  <th:block th:replace="layout/head-css :: commonCss"></th:block>
-  <style>
-    .btn-group {
-      margin-top: 20px;
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>메인화면</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<!-- 공통 CSS -->
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+<style>
+	.btn-group {
+		margin-top: 20px;
     }
     .btn-group a,
     .btn-group form {
-      display: inline-block;
-      margin-right: 10px;
+		display: inline-block;
+		margin-right: 10px;
     }
-  </style>
+</style>
 </head>
 <body>
-  <!-- 헤더 -->
-  <th:block th:replace="layout/header :: header"></th:block>
-<main>
-	<div class="container mt-5">
-		<h2>내 정보</h2>
-	    <table class="table table-bordered mt-3">
-	    	<tr>
-	        	<th>아이디</th>
-	        	<td th:text="${result.mbId}"></td>
-	      	</tr>
-	      	<tr>
-	        	<th>이름</th>
-	        	<td th:text="${result.mbName}"></td>
-	      	</tr>
-	      	<tr>
-	        	<th>닉네임</th>
-	       	 	<td th:text="${result.mbNick}"></td>
-	     	</tr>
-	      	<tr>
-	        	<th>성별</th>
-	        	<td th:text="${result.mbGender}"></td>
-	      	</tr>
-	      	<tr>
-	        	<th>연락처</th>
-	        	<td th:text="${result.mbHp}"></td>
-	      	</tr>
-	      	<tr>
-	        	<th>이메일</th>
-	        	<td th:text="${result.mbEmail}"></td>
-	      	</tr>
-	      	<tr>
-	        	<th>가입일</th>
-	        	<td th:text="${#temporals.format(result.mbSysdate, 'yyyy-MM-dd HH:mm')}"></td>
-	      	</tr>
-	    </table>	
-	    <div class="d-flex justify-content-center gap-2 mt-4">
-	      <a th:href="@{/home}" class="btn btn-secondary">목록</a>	
-	      <a th:href="@{/member/memberModify}" class="btn btn-primary">수정</a>	
-		  <form th:action="@{/member/withdraw}" method="post" style="display:inline;">
-		  	<input type="hidden" name="mbId" th:value="${result.mbId}" />
-		  	<button type="submit" class="btn btn-danger" onclick="return confirm('정말 탈퇴하시겠습니까?');">탈퇴</button>
-		  </form>
-	    </div>
-	</div>
-</main>
+<!-- 헤더 -->
+<th:block th:replace="layout/header :: header"></th:block>
+	<main>
+		<div class="container mt-5">
+			<h2>내 정보</h2>
+		    <table class="table table-bordered mt-3">
+		    	<tr>
+		        	<th>아이디</th>
+		        	<td th:text="${result.mbId}"></td>
+		      	</tr>
+		      	<tr>
+		        	<th>이름</th>
+		        	<td th:text="${result.mbName}"></td>
+		      	</tr>
+		      	<tr>
+		        	<th>닉네임</th>
+		       	 	<td th:text="${result.mbNick}"></td>
+		     	</tr>
+		      	<tr>
+		        	<th>성별</th>
+		        	<td th:text="${result.mbGender}"></td>
+		      	</tr>
+		      	<tr>
+		        	<th>연락처</th>
+		        	<td th:text="${result.mbHp}"></td>
+		      	</tr>
+		      	<tr>
+		        	<th>이메일</th>
+		        	<td th:text="${result.mbEmail}"></td>
+		      	</tr>
+		      	<tr>
+		        	<th>가입일</th>
+		        	<td th:text="${#temporals.format(result.mbSysdate, 'yyyy-MM-dd HH:mm')}"></td>
+		      	</tr>
+		    </table>	
+		    <div class="d-flex justify-content-center gap-2 mt-4">
+		      <a th:href="@{/home}" class="btn btn-secondary">목록</a>	
+		      <a th:href="@{/member/memberModify}" class="btn btn-primary">수정</a>	
+			  <form th:action="@{/member/withdraw}" method="post" style="display:inline;">
+			  	<input type="hidden" name="mbId" th:value="${result.mbId}" />
+			  	<button type="submit" class="btn btn-danger" onclick="return confirm('정말 탈퇴하시겠습니까?');">탈퇴</button>
+			  </form>
+		    </div>
+		</div>
+	</main>
 <!-- 푸터 -->
  <th:block th:replace="layout/footer :: footer"></th:block>
 </body>

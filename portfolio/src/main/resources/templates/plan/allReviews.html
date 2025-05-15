@@ -2,12 +2,12 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>전체 리뷰 목록</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 공통 CSS -->
-    <th:block th:replace="layout/head-css :: commonCss"></th:block>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<meta charset="UTF-8">
+<title>전체 리뷰 목록</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 공통 CSS -->
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
    <style>
         table {
             width: 100%;
@@ -64,9 +64,8 @@
 </style>
 </head>
 <body>
-    <!-- 헤더 -->
-    <th:block th:replace="layout/header :: header"></th:block>
-
+<!-- 헤더 -->
+<th:block th:replace="layout/header :: header"></th:block>
     <main>
         <div class="container mt-5">
             <h2 class="mb-4 fw-bold text-center">리뷰게시판</h2>
@@ -161,11 +160,9 @@
             </nav>
         </div>
     </main>
-
-    <!-- 푸터 -->
-    <th:block th:replace="layout/footer :: footer"></th:block>
-
-    <!-- FontAwesome 스크립트 -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<!-- 푸터 -->
+<th:block th:replace="layout/footer :: footer"></th:block>
+<!-- FontAwesome 스크립트 -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

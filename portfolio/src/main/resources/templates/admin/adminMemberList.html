@@ -1,97 +1,97 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>회원관리</title>
-  <!-- 공통 스타일시트 포함 -->
-  <th:block th:replace="layout/head-css :: commonCss"></th:block>
+<title>회원관리</title>
+<!-- 공통 스타일시트 포함 -->
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
 </head>
 <body>
-  <!-- 헤더 포함 -->
-  <th:block th:replace="layout/header :: header"></th:block>
-  <main>
-  <div class="container mt-5">
-    <h2>회원 목록</h2>
-    
-    <!-- 검색 폼 -->
-    <div class="d-flex justify-content-center mb-3">
-      <form th:action="@{/admin/adminMemberList}" method="get" class="d-flex">
-        <!-- 검색 조건 선택 -->
-        <select name="searchType" class="form-select me-2" style="width: 150px;">
-          <option th:value="MbId" th:selected="${searchType == 'MbId'}">아이디</option>
-          <option th:value="MbName" th:selected="${searchType == 'MbName'}">이름</option>
-        </select>
-        
-        <!-- 검색어 입력 -->
-        <input type="text" name="keyword" class="form-control me-2" th:value="${keyword}" style="width: 200px;" placeholder="검색어">
-        
-        <!-- 검색 버튼 -->
-        <button type="submit" class="btn btn-primary me-1">검색</button>
-        
-        <!-- 초기화 버튼 -->
-        <a th:href="@{/admin/adminMemberList}" class="btn btn-outline-secondary">초기화</a>
-      </form>
-    </div>
-    <!-- 검색 결과가 없을 경우 메시지 -->
-    <div class="col text-center" th:if="${#lists.isEmpty(boards)}">
-      <p class="text-muted fs-5">등록된 회원이 없습니다.</p>
-    </div>
-    <!-- 회원 목록 테이블 -->
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>아이디</th>
-          <th>이름</th>
-          <th>이메일</th>
-          <th>탈퇴여부</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="member : ${boards}">
-          <td>
-            <!-- 회원 상세보기 링크 -->
-            <a th:href="@{'/admin/member/' + ${member.mbId} + '?page=' + ${currentPage}}" th:text="${member.mbId}"></a>
-          </td>
-          <td th:text="${member.mbName}"></td>
-          <td th:text="${member.mbEmail}"></td>
-          <td th:text="${member.mbDeleted} ? '탈퇴' : '정상'"></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- 페이징 처리 -->
-    <nav aria-label="Page navigation" th:if="${not #lists.isEmpty(boards)}">
-      <ul class="pagination justify-content-center">
-   
-        <!-- 이전 페이지 버튼 -->
-        <li class="page-item" th:class="${currentPage == 1 ? 'disabled' : ''}">
-          <a class="page-link"
-		   th:href="@{/admin/adminMemberList(page=${currentPage - 1}, searchType=${searchType}, keyword=${keyword})}"
-		   aria-label="Previous">
-		  <span aria-hidden="true">&laquo;</span>
-		</a>
-        </li>
-
-        <!-- 페이지 번호 표시 -->
-        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
-            th:class="${i == currentPage ? 'page-item active' : 'page-item'}">
-          <a class="page-link"
-             th:href="@{/admin/adminMemberList(page=${i}, searchType=${searchType}, keyword=${keyword})}"
-             th:text="${i}"></a>
-        </li>
-
-        <!-- 다음 페이지 버튼 -->
-        <li class="page-item" th:class="${currentPage == totalPages ? 'disabled' : ''}">
-          <a class="page-link"
-			   th:href="@{/admin/adminMemberList(page=${currentPage + 1}, searchType=${searchType}, keyword=${keyword})}"
-			   aria-label="Next">
-			  <span aria-hidden="true">&raquo;</span>
+<!-- 헤더 포함 -->
+<th:block th:replace="layout/header :: header"></th:block>
+	<main>
+		<div class="container mt-5">
+	    <h2>회원 목록</h2>
+	    
+	    <!-- 검색 폼 -->
+	    <div class="d-flex justify-content-center mb-3">
+	      <form th:action="@{/admin/adminMemberList}" method="get" class="d-flex">
+	        <!-- 검색 조건 선택 -->
+	        <select name="searchType" class="form-select me-2" style="width: 150px;">
+	          <option th:value="MbId" th:selected="${searchType == 'MbId'}">아이디</option>
+	          <option th:value="MbName" th:selected="${searchType == 'MbName'}">이름</option>
+	        </select>
+	        
+	        <!-- 검색어 입력 -->
+	        <input type="text" name="keyword" class="form-control me-2" th:value="${keyword}" style="width: 200px;" placeholder="검색어">
+	        
+	        <!-- 검색 버튼 -->
+	        <button type="submit" class="btn btn-primary me-1">검색</button>
+	        
+	        <!-- 초기화 버튼 -->
+	        <a th:href="@{/admin/adminMemberList}" class="btn btn-outline-secondary">초기화</a>
+	      </form>
+	    </div>
+	    <!-- 검색 결과가 없을 경우 메시지 -->
+	    <div class="col text-center" th:if="${#lists.isEmpty(boards)}">
+	      <p class="text-muted fs-5">등록된 회원이 없습니다.</p>
+	    </div>
+	    <!-- 회원 목록 테이블 -->
+	    <table class="table table-bordered">
+	      <thead>
+	        <tr>
+	          <th>아이디</th>
+	          <th>이름</th>
+	          <th>이메일</th>
+	          <th>탈퇴여부</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        <tr th:each="member : ${boards}">
+	          <td>
+	            <!-- 회원 상세보기 링크 -->
+	            <a th:href="@{'/admin/member/' + ${member.mbId} + '?page=' + ${currentPage}}" th:text="${member.mbId}"></a>
+	          </td>
+	          <td th:text="${member.mbName}"></td>
+	          <td th:text="${member.mbEmail}"></td>
+	          <td th:text="${member.mbDeleted} ? '탈퇴' : '정상'"></td>
+	        </tr>
+	      </tbody>
+	    </table>
+	
+	    <!-- 페이징 처리 -->
+	    <nav aria-label="Page navigation" th:if="${not #lists.isEmpty(boards)}">
+	      <ul class="pagination justify-content-center">
+	   
+	        <!-- 이전 페이지 버튼 -->
+	        <li class="page-item" th:class="${currentPage == 1 ? 'disabled' : ''}">
+	          <a class="page-link"
+			   th:href="@{/admin/adminMemberList(page=${currentPage - 1}, searchType=${searchType}, keyword=${keyword})}"
+			   aria-label="Previous">
+			  <span aria-hidden="true">&laquo;</span>
 			</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</main>
-  <!-- 푸터 포함 -->
-  <th:block th:replace="layout/footer :: footer"></th:block>
+	        </li>
+	
+	        <!-- 페이지 번호 표시 -->
+	        <li th:each="i : ${#numbers.sequence(1, totalPages)}"
+	            th:class="${i == currentPage ? 'page-item active' : 'page-item'}">
+	          <a class="page-link"
+	             th:href="@{/admin/adminMemberList(page=${i}, searchType=${searchType}, keyword=${keyword})}"
+	             th:text="${i}"></a>
+	        </li>
+	
+	        <!-- 다음 페이지 버튼 -->
+	        <li class="page-item" th:class="${currentPage == totalPages ? 'disabled' : ''}">
+	          <a class="page-link"
+				   th:href="@{/admin/adminMemberList(page=${currentPage + 1}, searchType=${searchType}, keyword=${keyword})}"
+				   aria-label="Next">
+				  <span aria-hidden="true">&raquo;</span>
+				</a>
+	        </li>
+	      </ul>
+	    </nav>
+	  </div>
+	</main>
+<!-- 푸터 포함 -->
+<th:block th:replace="layout/footer :: footer"></th:block>
 </body>
 </html>

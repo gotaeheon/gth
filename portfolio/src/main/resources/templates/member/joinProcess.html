@@ -13,47 +13,47 @@
 <body>
 <!--헤더 -->
 <th:block th:replace="layout/header :: header"></th:block>
-<main>
-<div class="container-fluid mt-5 mb-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <div class="card p-4 shadow rounded-4">
-        <div class="card-header text-center fs-4 fw-bold bg-white border-0">
-          회원가입 완료
-        </div>
-        <div class="card-body">
-          <div class="alert alert-success text-center rounded-3">
-            &#127881; 회원가입이 완료되었습니다! <br />
-            로그인 후 이용해 주세요.
-          </div>
-
-          <div class="mb-4">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                <p>아이디:</p>
-                <span th:text="${result.mbId}"></span>
-              </li>
-			  <li class="list-group-item">
-			  	<p>이름:</p>
-			    <span th:text="${result.mbName}"></span>
-			    </li>
-              <li class="list-group-item">
-                <p>이메일:</p>
-                <span th:text="${result.mbEmail}"></span>
-              </li>
-      
-            </ul>
-          </div>
-
-          <div class="d-grid">
-            <a th:href="@{/member/login}" class="btn btn-primary btn-lg">로그인하러 가기</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</main>		
+	<main>
+		<div class="container-fluid mt-5 mb-5">
+		  <div class="row justify-content-center">
+		    <div class="col-12 col-md-8 col-lg-6">
+		      <div class="card p-4 shadow rounded-4">
+		        <div class="card-header text-center fs-4 fw-bold bg-white border-0">
+		          회원가입 완료
+		        </div>
+		        <div class="card-body">
+		          <div class="alert alert-success text-center rounded-3">
+		            &#127881; 회원가입이 완료되었습니다! <br />
+		            로그인 후 이용해 주세요.
+		          </div>
+		
+		          <div class="mb-4">
+		            <ul class="list-group list-group-flush">
+		              <li class="list-group-item">
+		                <p>아이디:</p>
+		                <span th:text="${result.mbId}"></span>
+		              </li>
+					  <li class="list-group-item">
+					  	<p>이름:</p>
+					    <span th:text="${result.mbName}"></span>
+					    </li>
+		              <li class="list-group-item">
+		                <p>이메일:</p>
+		                <span th:text="${result.mbEmail}"></span>
+		              </li>
+		      
+		            </ul>
+		          </div>
+		
+		          <div class="d-grid">
+		            <a th:href="@{/member/login}" class="btn btn-primary btn-lg">로그인하러 가기</a>
+		          </div>
+		        </div>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</main>		
 <th:block th:replace="layout/footer :: footer"></th:block>	
 </body>
 </html>

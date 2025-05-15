@@ -14,90 +14,90 @@
 <body>
 <!-- 헤더 -->
 <th:block th:replace="layout/header :: header"></th:block>
-<main>
-<div class="container-fluid mt-5 mb-5">
-	<div class="row justify-content-center">
-		<div class="col-12 col-md-8 col-lg-6">
-			<div class="card p-4 shadow rounded-4">
-				<div class="card-header text-center fs-4 fw-bold bg-white border-0">회원가입</div>
-        			<div class="card-body">
-          				<form id="registerForm" th:action="@{/member/join}" method="post" th:object="${memberDTO}">
-<!--          th:if="${#fields.hasErrors('mbId')}" th:errors="*{mbId}"=> 오류가 발생한다면 이라는뜻 -->           
-            				<div class="mb-3">
-								<label class="form-label">아이디</label>
-			  					<div class="input-group">
-			    					<input type="text" th:field="*{mbId}" id="mbId" class="form-control">
-			    					<button type="button" class="btn btn-outline-secondary" onclick="checkId()">중복확인</button>
-			  					</div>
-						  	<div class="text-danger" th:if="${#fields.hasErrors('mbId')}" th:errors="*{mbId}" style="min-height: 20px;"></div>
-							<div id="idCheckMsg" class="mt-1" style="font-size: 0.9em;"></div>
+	<main>
+		<div class="container-fluid mt-5 mb-5">
+			<div class="row justify-content-center">
+				<div class="col-12 col-md-8 col-lg-6">
+					<div class="card p-4 shadow rounded-4">
+						<div class="card-header text-center fs-4 fw-bold bg-white border-0">회원가입</div>
+		        			<div class="card-body">
+		          				<form id="registerForm" th:action="@{/member/join}" method="post" th:object="${memberDTO}">
+									<!--th:if="${#fields.hasErrors('mbId')}" th:errors="*{mbId}"=> 오류가 발생한다면 이라는뜻 -->           
+		            				<div class="mb-3">
+										<label class="form-label">아이디</label>
+					  					<div class="input-group">
+					    					<input type="text" th:field="*{mbId}" id="mbId" class="form-control">
+					    					<button type="button" class="btn btn-outline-secondary" onclick="checkId()">중복확인</button>
+					  					</div>
+								  	<div class="text-danger" th:if="${#fields.hasErrors('mbId')}" th:errors="*{mbId}" style="min-height: 20px;"></div>
+									<div id="idCheckMsg" class="mt-1" style="font-size: 0.9em;"></div>
+									</div>
+		
+		            				<div class="row mb-3">
+		              					<div class="col">
+							                <label class="form-label">비밀번호</label>
+							                <input type="password" th:field="*{mbPw}" class="form-control" maxlength="12">
+							                <div class="text-danger" th:if="${#fields.hasErrors('mbPw')}" th:errors="*{mbPw}" style="min-height: 20px;"></div>
+		              					</div>
+		              					<div class="col">
+							                <label class="form-label">비밀번호 재입력</label>
+							                <input type="password" th:field="*{mbPwRe}" class="form-control" maxlength="12">
+		                				<div class="text-danger" th:if="${#fields.hasErrors('mbPwRe')}" th:errors="*{mbPwRe}" style="min-height: 20px;"></div>
+		              					</div>
+		           				 	</div>
+		
+						            <div class="mb-3">
+						              	<label class="form-label">이름</label>
+						              	<input type="text" th:field="*{mbName}" class="form-control">
+						            	<div class="text-danger" th:if="${#fields.hasErrors('mbName')}" th:errors="*{mbName}" style="min-height: 20px;"></div>
+						            </div>
+		
+						            <div class="mb-3">
+						              	<label class="form-label">닉네임</label>
+						              	<input type="text" th:field="*{mbNick}" class="form-control">
+						            	<div class="text-danger" th:if="${#fields.hasErrors('mbNick')}" th:errors="*{mbNick}" style="min-height: 20px;"></div>
+						            </div>
+		
+						            <div class="mb-3">
+										<label class="form-label">이메일</label>
+									  		<div class="input-group">
+									    		<input type="email" th:field="*{mbEmail}" id="mbEmail" class="form-control">
+									    		<button type="button" class="btn btn-outline-secondary" onclick="checkEmail()">중복확인</button>
+									  		</div>
+										<div class="text-danger" th:if="${#fields.hasErrors('mbEmail')}" th:errors="*{mbEmail}" style="min-height: 20px;"></div>
+										<div id="emailCheckMsg" class="mt-1" style="font-size: 0.9em;"></div>
+									</div>
+		
+									<div class="mb-3">
+						            	<label class="form-label d-block">성별</label>
+						              	<div class="form-check form-check-inline">
+						                	<input class="form-check-input" type="radio" th:field="*{mbGender}" value="M" id="man">
+						                	<label class="form-check-label" for="man">남</label>
+						              	</div>
+							            	<div class="form-check form-check-inline">
+							                	<input class="form-check-input" type="radio" th:field="*{mbGender}" value="F" id="woman">
+							                	<label class="form-check-label" for="woman">여</label>
+							              	</div>
+						              		<div class="text-danger" th:if="${#fields.hasErrors('mbGender')}" th:errors="*{mbGender}" style="min-height: 20px;"></div>
+									</div>
+		
+									<div class="mb-4">
+						            	<label class="form-label">연락처</label>
+						            	<input type="text" th:field="*{mbHp}" class="form-control" maxlength="11" placeholder=" - 제외하고 입력">
+						            	<div class="text-danger" th:if="${#fields.hasErrors('mbHp')}" th:errors="*{mbHp}" style="min-height: 20px;"></div>
+						            </div>
+		            
+		            				<div class="d-flex justify-content-end">
+						            	<button type="submit" class="btn btn-primary me-2">회원가입</button>
+						            	<button type="reset" class="btn btn-danger">초기화</button>
+		            				</div>
+								</form>
 							</div>
-
-            				<div class="row mb-3">
-              					<div class="col">
-					                <label class="form-label">비밀번호</label>
-					                <input type="password" th:field="*{mbPw}" class="form-control" maxlength="12">
-					                <div class="text-danger" th:if="${#fields.hasErrors('mbPw')}" th:errors="*{mbPw}" style="min-height: 20px;"></div>
-              					</div>
-              					<div class="col">
-					                <label class="form-label">비밀번호 재입력</label>
-					                <input type="password" th:field="*{mbPwRe}" class="form-control" maxlength="12">
-                				<div class="text-danger" th:if="${#fields.hasErrors('mbPwRe')}" th:errors="*{mbPwRe}" style="min-height: 20px;"></div>
-              					</div>
-           				 	</div>
-
-				            <div class="mb-3">
-				              	<label class="form-label">이름</label>
-				              	<input type="text" th:field="*{mbName}" class="form-control">
-				            	<div class="text-danger" th:if="${#fields.hasErrors('mbName')}" th:errors="*{mbName}" style="min-height: 20px;"></div>
-				            </div>
-
-				            <div class="mb-3">
-				              	<label class="form-label">닉네임</label>
-				              	<input type="text" th:field="*{mbNick}" class="form-control">
-				            	<div class="text-danger" th:if="${#fields.hasErrors('mbNick')}" th:errors="*{mbNick}" style="min-height: 20px;"></div>
-				            </div>
-
-				            <div class="mb-3">
-								<label class="form-label">이메일</label>
-							  		<div class="input-group">
-							    		<input type="email" th:field="*{mbEmail}" id="mbEmail" class="form-control">
-							    		<button type="button" class="btn btn-outline-secondary" onclick="checkEmail()">중복확인</button>
-							  		</div>
-								<div class="text-danger" th:if="${#fields.hasErrors('mbEmail')}" th:errors="*{mbEmail}" style="min-height: 20px;"></div>
-								<div id="emailCheckMsg" class="mt-1" style="font-size: 0.9em;"></div>
-							</div>
-
-							<div class="mb-3">
-				            	<label class="form-label d-block">성별</label>
-				              	<div class="form-check form-check-inline">
-				                	<input class="form-check-input" type="radio" th:field="*{mbGender}" value="M" id="man">
-				                	<label class="form-check-label" for="man">남</label>
-				              	</div>
-					            	<div class="form-check form-check-inline">
-					                	<input class="form-check-input" type="radio" th:field="*{mbGender}" value="F" id="woman">
-					                	<label class="form-check-label" for="woman">여</label>
-					              	</div>
-				              		<div class="text-danger" th:if="${#fields.hasErrors('mbGender')}" th:errors="*{mbGender}" style="min-height: 20px;"></div>
-							</div>
-
-							<div class="mb-4">
-				            	<label class="form-label">연락처</label>
-				            	<input type="text" th:field="*{mbHp}" class="form-control" maxlength="11" placeholder=" - 제외하고 입력">
-				            	<div class="text-danger" th:if="${#fields.hasErrors('mbHp')}" th:errors="*{mbHp}" style="min-height: 20px;"></div>
-				            </div>
-            
-            				<div class="d-flex justify-content-end">
-				            	<button type="submit" class="btn btn-primary me-2">회원가입</button>
-				            	<button type="reset" class="btn btn-danger">초기화</button>
-            				</div>
-						</form>
+						</div>
 					</div>
 				</div>
-			</div>
 		</div>
-</div>
-</main>
+	</main>
 <!-- 푸터 -->
 <th:block th:replace="layout/footer :: footer"></th:block>
 <script>

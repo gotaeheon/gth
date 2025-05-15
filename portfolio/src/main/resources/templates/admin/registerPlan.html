@@ -2,14 +2,12 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>추천 일정 등록</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>추천 일정 등록</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- 공통 CSS -->
     <th:block th:replace="layout/head-css :: commonCss"></th:block>
@@ -17,7 +15,6 @@
 <body>
 <!-- 헤더 -->
 <th:block th:replace="layout/header :: header"></th:block>
-
 <main class="container mt-4">
     <h1 class="mb-4">추천 일정 등록</h1>
     <form id="planForm" action="/admin/registerPlan" method="POST" onsubmit="return validateForm()">

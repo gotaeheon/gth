@@ -2,53 +2,50 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"> 
-  <title>추천 일정 차트</title>
-  <!-- 공통 CSS -->
-  <th:block th:replace="layout/head-css :: commonCss"></th:block>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport"> 
+<title>추천 일정 차트</title>
+<!-- 공통 CSS -->
+<th:block th:replace="layout/head-css :: commonCss"></th:block>
 </head>
 <body>
-  <!-- 헤더 -->
-  <th:block th:replace="layout/header :: header"></th:block>
-
-  <main class="container mt-5">
-    <h2 class="mb-4 text-center">추천 일정 차트 보기</h2>
-
-    <!-- 정렬 옵션 -->
-    <div class="d-flex justify-content-center mb-4">
-      <label class="me-3 fw-bold align-self-center">정렬:</label>
-      <form method="get" action="/admin/review-plans/chart" class="d-flex">
-          <select name="sort" onchange="this.form.submit()" class="form-select w-auto">
-              <option value="ratingDesc" th:selected="${sort == 'ratingDesc'}">평점 높은 순</option>
-              <option value="ratingAsc" th:selected="${sort == 'ratingAsc'}">평점 낮은 순</option>
-              <option value="priceDesc" th:selected="${sort == 'priceDesc'}">가격 높은 순</option>
-              <option value="priceAsc" th:selected="${sort == 'priceAsc'}">가격 낮은 순</option>
-          </select>
-      </form>
-    </div>
-
-    <!-- 차트 정보 텍스트 -->
-    <div class="mb-4 text-center">
-        <h5 th:text="${sort.startsWith('rating') ? '평점 (단위)' : '가격 (단위: 원)'}"></h5>
-    </div>
-
-    <!-- 차트 영역 -->
-    <div class="mb-4">
-      <div id="chart_div" style="width: 100%; height: 500px;"></div>
-    </div> 
-
-    <!-- 돌아가기 버튼 -->
-    <div class="d-flex justify-content-center">
-      <a th:href="@{/admin/review-plans}" class="btn btn-primary mb-3">돌아가기</a>
-    </div>
-  </main>
-
-  <!-- 푸터 -->
-  <th:block th:replace="layout/footer :: footer"></th:block>
-
-  <!-- 차트 스크립트 -->
-  <script>
+<!-- 헤더 -->
+<th:block th:replace="layout/header :: header"></th:block>
+	<main class="container mt-5">
+	    <h2 class="mb-4 text-center">추천 일정 차트 보기</h2>
+	
+	    <!-- 정렬 옵션 -->
+	    <div class="d-flex justify-content-center mb-4">
+	      <label class="me-3 fw-bold align-self-center">정렬:</label>
+	      <form method="get" action="/admin/review-plans/chart" class="d-flex">
+	          <select name="sort" onchange="this.form.submit()" class="form-select w-auto">
+	              <option value="ratingDesc" th:selected="${sort == 'ratingDesc'}">평점 높은 순</option>
+	              <option value="ratingAsc" th:selected="${sort == 'ratingAsc'}">평점 낮은 순</option>
+	              <option value="priceDesc" th:selected="${sort == 'priceDesc'}">가격 높은 순</option>
+	              <option value="priceAsc" th:selected="${sort == 'priceAsc'}">가격 낮은 순</option>
+	          </select>
+	      </form>
+	    </div>
+	
+	    <!-- 차트 정보 텍스트 -->
+	    <div class="mb-4 text-center">
+	        <h5 th:text="${sort.startsWith('rating') ? '평점 (단위)' : '가격 (단위: 원)'}"></h5>
+	    </div>
+	
+	    <!-- 차트 영역 -->
+	    <div class="mb-4">
+	      <div id="chart_div" style="width: 100%; height: 500px;"></div>
+	    </div> 
+	
+	    <!-- 돌아가기 버튼 -->
+	    <div class="d-flex justify-content-center">
+	      <a th:href="@{/admin/review-plans}" class="btn btn-primary mb-3">돌아가기</a>
+	    </div>
+	</main>
+<!-- 푸터 -->
+<th:block th:replace="layout/footer :: footer"></th:block>
+<!-- 차트 스크립트 -->
+<script>
     google.charts.load('current', { packages: ['corechart'] });
     google.charts.setOnLoadCallback(loadChartData);
 
@@ -111,6 +108,6 @@
         }
       });
     }
-  </script>
+</script>
 </body>
 </html>

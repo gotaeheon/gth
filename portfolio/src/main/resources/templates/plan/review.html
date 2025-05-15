@@ -6,76 +6,76 @@
 <title>리뷰 작성</title>
 <th:block th:replace="layout/head-css :: commonCss"></th:block>
 <style>
-.star-rating {
-	display: flex;
-}
-.star-rating input[type="radio"] {
-	display: none;
-}
-.star-rating label {
-	font-size: 2rem;
-	color: gold;
-	cursor: pointer;
-	padding: 0 5px;
-	transition: color 0.3s ease;
-}
-.star-rating input:checked ~ label {
-	color: #ccc;
-}
-.star-rating label:hover,
-.star-rating label:hover ~ label {
-	color: ccc;
-}
+	.star-rating {
+		display: flex;
+	}
+	.star-rating input[type="radio"] {
+		display: none;
+	}
+	.star-rating label {
+		font-size: 2rem;
+		color: gold;
+		cursor: pointer;
+		padding: 0 5px;
+		transition: color 0.3s ease;
+	}
+	.star-rating input:checked ~ label {
+		color: #ccc;
+	}
+	.star-rating label:hover,
+	.star-rating label:hover ~ label {
+		color: ccc;
+	}
 </style>
 </head>
 <body>
 <th:block th:replace="layout/header :: header"></th:block>
-<main>
-<div class="container mt-5">
-    <h2>리뷰 작성</h2>
-    <form th:action="@{/plans/saveReview}" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
-		<input type="hidden" th:name="planId" th:value="${planId}"/>
-
-        <div class="form-group">
-            <label for="reTitle" class="form-label">제목</label>
-            <input type="text" name="reTitle" id="reTitle" class="form-control" placeholder="제목을 입력하세요!" required>
-            <p style="color:gray">※ 제목 앞에 일정명이 자동으로 붙습니다.</p>
-        </div>
-
-        <div class="form-group">
-            <label for="reComment">내용</label>
-            <textarea id="reComment" name="reComment" class="form-control" required placeholder="리뷰 내용을 입력해주세요!"></textarea>
-        </div>
-
-        <div class="mb-3">
-            <label for="imageFile" class="form-label">이미지 첨부</label>
-            <input type="file" id="imageFile" name="imageFile" class="form-control" multiple>
-        </div>
-
-        <div class="form-group">
-            <label for="reScore">평점을 남겨주세요!</label><br />
-            <div class="star-rating">
-				<label for="star1">&#9733;</label>
-				<input type="radio" id="star1" name="reScore" value="1"/>
-					    
-				<label for="star2">&#9733;</label>
-				<input type="radio" id="star2" name="reScore" value="2"/>
-					    
-				<label for="star3">&#9733;</label>
-				<input type="radio" id="star3" name="reScore" value="3"/>
-					    
-				<label for="star4">&#9733;</label>
-				<input type="radio" id="star4" name="reScore" value="4"/>
-					    
-				<label for="star5">&#9733;</label>
-				<input type="radio" id="star5" name="reScore" value="5"/>
-			</div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">리뷰 작성</button>
-    </form>
-</div>
-</main>
+	<main>
+		<div class="container mt-5">
+		    <h2>리뷰 작성</h2>
+		    <form th:action="@{/plans/saveReview}" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
+				<input type="hidden" th:name="planId" th:value="${planId}"/>
+		
+		        <div class="form-group">
+		            <label for="reTitle" class="form-label">제목</label>
+		            <input type="text" name="reTitle" id="reTitle" class="form-control" placeholder="제목을 입력하세요!" required>
+		            <p style="color:gray">※ 제목 앞에 일정명이 자동으로 붙습니다.</p>
+		        </div>
+		
+		        <div class="form-group">
+		            <label for="reComment">내용</label>
+		            <textarea id="reComment" name="reComment" class="form-control" required placeholder="리뷰 내용을 입력해주세요!"></textarea>
+		        </div>
+		
+		        <div class="mb-3">
+		            <label for="imageFile" class="form-label">이미지 첨부</label>
+		            <input type="file" id="imageFile" name="imageFile" class="form-control" multiple>
+		        </div>
+		
+		        <div class="form-group">
+		            <label for="reScore">평점을 남겨주세요!</label><br />
+		            <div class="star-rating">
+						<label for="star1">&#9733;</label>
+						<input type="radio" id="star1" name="reScore" value="1"/>
+							    
+						<label for="star2">&#9733;</label>
+						<input type="radio" id="star2" name="reScore" value="2"/>
+							    
+						<label for="star3">&#9733;</label>
+						<input type="radio" id="star3" name="reScore" value="3"/>
+							    
+						<label for="star4">&#9733;</label>
+						<input type="radio" id="star4" name="reScore" value="4"/>
+							    
+						<label for="star5">&#9733;</label>
+						<input type="radio" id="star5" name="reScore" value="5"/>
+					</div>
+		        </div>
+		
+		        <button type="submit" class="btn btn-primary">리뷰 작성</button>
+		    </form>
+		</div>
+	</main>
 <th:block th:replace="layout/footer :: footer"></th:block>
 <script>
     function validateForm() {
